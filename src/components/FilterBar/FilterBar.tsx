@@ -1,36 +1,27 @@
-import { MapPin, Search, X } from "lucide-react";
+import { Search, X, Layers } from "lucide-react";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import styles from "./FilterBar.module.scss";
 
 export type StatusFilter = "" | "Alive" | "Dead" | "unknown";
+export type GroupBy = "" | "origin" | "gender" | "status" | "species";
 
 interface Props {
-  name: string;
-  origin: string;
+  search: string;
   status: StatusFilter;
-  groupByOrigin: boolean;
-  onNameChange: (name: string) => void;
-  onOriginChange: (origin: string) => void;
-  onStatusChange: (status: StatusFilter) => void;
-  onGroupByOriginChange: (v: boolean) => void;
+  groupBy: GroupBy;
+  onSearchChange: (v: string) => void;
+  onStatusChange: (v: StatusFilter) => void;
+  onGroupByChange: (v: GroupBy) => void;
   className?: string;
 }
 
-const STATUS_OPTIONS: { value: StatusFilter; label: string }[] = [
-  { value: "", label: "All" },
-  { value: "Alive", label: "Alive" },
-  { value: "Dead", label: "Dead" },
-  { value: "unknown", label: "Unknown" },
-];
-
 export function FilterBar({
-  name,
-  origin,
+  search,
   status,
-  groupByOrigin,
-  onNameChange,
-  onOriginChange,
+  groupBy,
+  onSearchChange,
   onStatusChange,
-  onGroupByOriginChange,
+  onGroupByChange,
   className,
 }: Props) {
   return (
@@ -40,29 +31,13 @@ export function FilterBar({
           <Search className={styles.searchIcon} size={13} />
           <input
             type="text"
-            placeholder="Search by name..."
-            value={name}
-            onChange={(e) => onNameChange(e.target.value)}
+            placeholder="Search by name, species..."
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
             className={styles.input}
           />
-          {name && (
-            <button className={styles.clear} onClick={() => onNameChange("")} aria-label="Clear">
-              <X size={11} />
-            </button>
-          )}
-        </div>
-
-        <div className={styles.search}>
-          <MapPin className={styles.searchIcon} size={13} />
-          <input
-            type="text"
-            placeholder="Search by origin..."
-            value={origin}
-            onChange={(e) => onOriginChange(e.target.value)}
-            className={styles.input}
-          />
-          {origin && (
-            <button className={styles.clear} onClick={() => onOriginChange("")} aria-label="Clear">
+          {search && (
+            <button className={styles.clear} onClick={() => onSearchChange("")} aria-label="Clear">
               <X size={11} />
             </button>
           )}
@@ -70,26 +45,39 @@ export function FilterBar({
       </div>
 
       <div className={styles.chips}>
-        {STATUS_OPTIONS.map((opt) => (
-          <button
-            key={opt.value}
-            className={`${styles.chip} ${status === opt.value ? styles.chipActive : ""}`}
-            onClick={() => onStatusChange(opt.value)}
-          >
-            {opt.value && <span className={`${styles.dot} ${styles[`dot${opt.label}`]}`} />}
-            {opt.label}
-          </button>
-        ))}
+        <Select
+          value={status === "" ? "all" : status}
+          onValueChange={(v) => onStatusChange(v === "all" ? "" : v as StatusFilter)}
+        >
+          <SelectTrigger className={`${styles.chip} ${!status ? styles.chipActive : ""}`}>
+            <SelectValue placeholder="All" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All status</SelectItem>
+            <SelectItem value="Alive">Alive</SelectItem>
+            <SelectItem value="Dead">Dead</SelectItem>
+            <SelectItem value="unknown">Unknown</SelectItem>
+          </SelectContent>
+        </Select>
 
         <span className={styles.sep} />
 
-        <button
-          className={`${styles.chip} ${groupByOrigin ? styles.chipActive : ""}`}
-          onClick={() => onGroupByOriginChange(!groupByOrigin)}
+        <Select
+          value={groupBy === "" ? "none" : groupBy}
+          onValueChange={(v) => onGroupByChange(v === "none" ? "" : v as GroupBy)}
         >
-          <MapPin size={10} />
-          Group
-        </button>
+          <SelectTrigger className={`${styles.chip} ${groupBy ? styles.chipActive : ""}`}>
+            <Layers size={10} style={{ flexShrink: 0 }} />
+            <SelectValue placeholder="Group" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="none">No group</SelectItem>
+            <SelectItem value="origin">By origin</SelectItem>
+            <SelectItem value="gender">By gender</SelectItem>
+            <SelectItem value="status">By status</SelectItem>
+            <SelectItem value="species">By species</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );

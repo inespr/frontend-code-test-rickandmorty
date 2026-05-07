@@ -6,12 +6,23 @@ import { usePagination } from "../../hooks/usePagination";
 import { useIsMobile } from "../../hooks/useIsMobile";
 import { useDebounce } from "../../hooks/useDebounce";
 import { CharacterCard } from "../../components/CharacterCard";
-import { FilterBar, StatusFilter } from "../../components/FilterBar";
+import { FilterBar, StatusFilter, GroupBy } from "../../components/FilterBar";
 import { EpisodesModal } from "../../components/EpisodesModal/EpisodesModal";
 import { Pagination } from "../../components/Pagination";
-import { Loader } from "../../components/Loader";
 import { ErrorMessage } from "../../components/ErrorMessage";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Character } from "../../types";
 import styles from "./HomePage.module.scss";
+
+const getGroupKey = (char: Character, groupBy: GroupBy): string => {
+  switch (groupBy) {
+    case "origin":  return char.origin.name;
+    case "gender":  return char.gender;
+    case "status":  return char.status;
+    case "species": return char.species;
+    default: return "";
+  }
+};
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -19,56 +30,46 @@ export default function HomePage() {
   const { page, goToPage } = usePagination();
   const isMobile = useIsMobile();
 
-  const [nameInput, setNameInput] = useState("");
-  const [originInput, setOriginInput] = useState("");
+  const [search, setSearch] = useState("");
   const [status, setStatus] = useState<StatusFilter>("");
-  const [groupByOrigin, setGroupByOrigin] = useState(false);
-  const [collapsedOrigins, setCollapsedOrigins] = useState<Set<string>>(new Set());
+  const [groupBy, setGroupBy] = useState<GroupBy>("");
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
   const [episodesOpen, setEpisodesOpen] = useState(false);
-  const debouncedName = useDebounce(nameInput, 400);
+  const debouncedSearch = useDebounce(search, 400);
 
-  const toggleOrigin = (origin: string) =>
-    setCollapsedOrigins((prev) => {
-      const next = new Set(prev);
-      next.has(origin) ? next.delete(origin) : next.add(origin);
-      return next;
-    });
-
-  useEffect(() => { goToPage(1); }, [debouncedName, status]);
+  useEffect(() => { goToPage(1); }, [debouncedSearch, status]);
 
   const { characters, info, fetching, error } = useCharacters(page, {
-    name: debouncedName || undefined,
+    name: debouncedSearch || undefined,
     status: status || undefined,
   });
 
-  const baseCharacters = isMobile ? characters.slice(0, 10) : characters;
-  const displayedCharacters = originInput
-    ? baseCharacters.filter((c) =>
-        c.origin.name.toLowerCase().includes(originInput.toLowerCase())
-      )
-    : baseCharacters;
+  const toggleGroup = (key: string) =>
+    setCollapsedGroups((prev) => {
+      const next = new Set(prev);
+      next.has(key) ? next.delete(key) : next.add(key);
+      return next;
+    });
 
-  const grouped = groupByOrigin
+  const displayedCharacters = isMobile ? characters.slice(0, 10) : characters;
+
+  const grouped = groupBy
     ? displayedCharacters.reduce((acc, char) => {
-        const origin = char.origin.name;
-        if (!acc[origin]) acc[origin] = [];
-        acc[origin].push(char);
+        const key = getGroupKey(char, groupBy);
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(char);
         return acc;
       }, {} as Record<string, typeof displayedCharacters>)
     : null;
 
-  const sortedOrigins = grouped ? Object.keys(grouped).sort() : [];
+  const sortedKeys = grouped ? Object.keys(grouped).sort() : [];
 
   const renderCard = (character: (typeof displayedCharacters)[0], i: number) => (
     <li key={character.id}>
       <CharacterCard
         character={character}
         index={i}
-        onClick={() =>
-          navigate(`/character/${character.id}`, {
-            state: { background: location },
-          })
-        }
+        onClick={() => navigate(`/character/${character.id}`, { state: { background: location } })}
       />
     </li>
   );
@@ -81,9 +82,7 @@ export default function HomePage() {
             <div className={styles.logoRow}>
               <img src="/favicon.svg" alt="" className={styles.logoIcon} aria-hidden="true" />
               <span className={styles.logoBadge}>Rick&Morty</span>
-              {info && (
-                <span className={styles.infoCount}>{info.count} characters</span>
-              )}
+              {info && <span className={styles.infoCount}>{info.count} characters</span>}
             </div>
             <button className={styles.episodesBtn} onClick={() => setEpisodesOpen(true)}>
               <Tv2 size={13} />
@@ -91,47 +90,45 @@ export default function HomePage() {
             </button>
           </div>
           <FilterBar
-            name={nameInput}
-            origin={originInput}
+            search={search}
             status={status}
-            groupByOrigin={groupByOrigin}
-            onNameChange={setNameInput}
-            onOriginChange={setOriginInput}
+            groupBy={groupBy}
+            onSearchChange={setSearch}
             onStatusChange={setStatus}
-            onGroupByOriginChange={setGroupByOrigin}
+            onGroupByChange={setGroupBy}
             className={styles.headerFilter}
           />
         </div>
       </header>
 
       <main className={styles.main}>
-
-        {fetching && <Loader fullPage />}
+        {fetching && (
+          <ul className={styles.grid} aria-hidden="true">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <li key={i}><Skeleton className={styles.skeletonCard} /></li>
+            ))}
+          </ul>
+        )}
         {error && <ErrorMessage message="Failed to load characters." />}
 
         {!fetching && !error && info && (
           grouped ? (
-            sortedOrigins.map((origin) => {
-              const collapsed = collapsedOrigins.has(origin);
+            sortedKeys.map((key) => {
+              const collapsed = collapsedGroups.has(key);
               return (
-                <div key={origin} className={styles.group}>
+                <div key={key} className={styles.group}>
                   <button
                     className={styles.groupLabel}
-                    onClick={() => toggleOrigin(origin)}
+                    onClick={() => toggleGroup(key)}
                     aria-expanded={!collapsed}
                   >
-                    {collapsed
-                      ? <ChevronRight size={12} />
-                      : <ChevronDown size={12} />
-                    }
-                    {origin}
-                    <span className={styles.groupCount}>
-                      {grouped[origin].length}
-                    </span>
+                    {collapsed ? <ChevronRight size={12} /> : <ChevronDown size={12} />}
+                    {key}
+                    <span className={styles.groupCount}>{grouped[key].length}</span>
                   </button>
                   {!collapsed && (
                     <ul className={styles.grid} role="list">
-                      {grouped[origin].map((char, i) => renderCard(char, i))}
+                      {grouped[key].map((char, i) => renderCard(char, i))}
                     </ul>
                   )}
                 </div>
@@ -152,11 +149,7 @@ export default function HomePage() {
       {!fetching && !error && info && info.pages > 1 && (
         <footer className={styles.footer}>
           <span className={styles.infoPage}>Page {page} of {info.pages}</span>
-          <Pagination
-            currentPage={page}
-            totalPages={info.pages}
-            onPageChange={goToPage}
-          />
+          <Pagination currentPage={page} totalPages={info.pages} onPageChange={goToPage} />
         </footer>
       )}
       {episodesOpen && <EpisodesModal onClose={() => setEpisodesOpen(false)} />}

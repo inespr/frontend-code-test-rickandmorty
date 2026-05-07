@@ -1,69 +1,45 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { FilterBar, StatusFilter } from "./FilterBar";
+import { FilterBar, StatusFilter, GroupBy } from "./FilterBar";
 
 const makeProps = (overrides = {}) => ({
-  name: "",
-  origin: "",
+  search: "",
   status: "" as StatusFilter,
-  groupByOrigin: false,
-  onNameChange: vi.fn(),
-  onOriginChange: vi.fn(),
+  groupBy: "" as GroupBy,
+  onSearchChange: vi.fn(),
   onStatusChange: vi.fn(),
-  onGroupByOriginChange: vi.fn(),
+  onGroupByChange: vi.fn(),
   ...overrides,
 });
 
 describe("FilterBar", () => {
-  it("renders all status chips", () => {
+  it("renders search input", () => {
     render(<FilterBar {...makeProps()} />);
-    expect(screen.getByText("All")).toBeInTheDocument();
-    expect(screen.getByText("Alive")).toBeInTheDocument();
-    expect(screen.getByText("Dead")).toBeInTheDocument();
-    expect(screen.getByText("Unknown")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Search by name, species...")).toBeInTheDocument();
   });
 
-  it("calls onNameChange when typing", async () => {
-    const onNameChange = vi.fn();
-    render(<FilterBar {...makeProps({ onNameChange })} />);
-    await userEvent.type(screen.getByPlaceholderText("Search by name..."), "Rick");
-    expect(onNameChange).toHaveBeenCalled();
-    expect(onNameChange).toHaveBeenLastCalledWith("k");
+  it("calls onSearchChange when typing", async () => {
+    const onSearchChange = vi.fn();
+    render(<FilterBar {...makeProps({ onSearchChange })} />);
+    await userEvent.type(screen.getByPlaceholderText("Search by name, species..."), "Rick");
+    expect(onSearchChange).toHaveBeenCalled();
+    expect(onSearchChange).toHaveBeenLastCalledWith("k");
   });
 
-  it("calls onOriginChange when typing in origin input", async () => {
-    const onOriginChange = vi.fn();
-    render(<FilterBar {...makeProps({ onOriginChange })} />);
-    await userEvent.type(screen.getByPlaceholderText("Search by origin..."), "Earth");
-    expect(onOriginChange).toHaveBeenCalled();
+  it("shows clear button when search has value and clears on click", async () => {
+    const onSearchChange = vi.fn();
+    render(<FilterBar {...makeProps({ search: "Rick", onSearchChange })} />);
+    await userEvent.click(screen.getByLabelText("Clear"));
+    expect(onSearchChange).toHaveBeenCalledWith("");
   });
 
-  it("calls onStatusChange with correct value when clicking Alive chip", async () => {
-    const onStatusChange = vi.fn();
-    render(<FilterBar {...makeProps({ onStatusChange })} />);
-    await userEvent.click(screen.getByText("Alive"));
-    expect(onStatusChange).toHaveBeenCalledWith("Alive");
+  it("renders status select with placeholder", () => {
+    render(<FilterBar {...makeProps()} />);
+    expect(screen.getByText(/all status/i)).toBeInTheDocument();
   });
 
-  it("calls onStatusChange with empty string when clicking All", async () => {
-    const onStatusChange = vi.fn();
-    render(<FilterBar {...makeProps({ onStatusChange, status: "Alive" })} />);
-    await userEvent.click(screen.getByText("All"));
-    expect(onStatusChange).toHaveBeenCalledWith("");
-  });
-
-  it("shows clear button when name is set and calls onNameChange with empty string", async () => {
-    const onNameChange = vi.fn();
-    render(<FilterBar {...makeProps({ name: "Rick", onNameChange })} />);
-    const clearBtn = screen.getAllByLabelText("Clear")[0];
-    await userEvent.click(clearBtn);
-    expect(onNameChange).toHaveBeenCalledWith("");
-  });
-
-  it("toggles groupByOrigin when clicking Group chip", async () => {
-    const onGroupByOriginChange = vi.fn();
-    render(<FilterBar {...makeProps({ onGroupByOriginChange })} />);
-    await userEvent.click(screen.getByText("Group"));
-    expect(onGroupByOriginChange).toHaveBeenCalledWith(true);
+  it("renders group by select with placeholder", () => {
+    render(<FilterBar {...makeProps()} />);
+    expect(screen.getByText(/group/i)).toBeInTheDocument();
   });
 });

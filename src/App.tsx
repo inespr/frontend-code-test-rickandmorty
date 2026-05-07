@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import CharacterPage from "./pages/CharacterPage";
 import EpisodePage from "./pages/EpisodePage";
 import { Dialog, DialogContent } from "@/components/Dialog";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 function AppRoutes() {
   const location = useLocation();
@@ -38,7 +39,9 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AppRoutes />
+      <TooltipProvider>
+        <AppRoutes />
+      </TooltipProvider>
     </BrowserRouter>
   );
 }

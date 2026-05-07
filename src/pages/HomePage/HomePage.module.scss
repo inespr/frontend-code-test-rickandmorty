@@ -274,6 +274,12 @@
   font-weight: 400;
 }
 
+.skeletonCard {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+}
+
 .noResults {
   font-family: var(--font-mono);
   font-size: 0.8rem;

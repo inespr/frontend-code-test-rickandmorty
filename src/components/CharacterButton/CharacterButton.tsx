@@ -1,5 +1,6 @@
 import { EpisodeCharacter } from "../../types";
 import { STATUS_COLOR } from "../../utils/constants";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import styles from "./CharacterButton.module.scss";
 
 interface Props {
@@ -17,10 +18,15 @@ export function CharacterButton({ char, onClick, variant = "card" }: Props) {
     >
       <div className={styles.avatarWrapper}>
         <img src={char.image} alt={char.name} className={styles.avatar} />
-        <span
-          className={styles.statusDot}
-          style={{ background: STATUS_COLOR[char.status] ?? STATUS_COLOR.unknown }}
-        />
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span
+              className={styles.statusDot}
+              style={{ background: STATUS_COLOR[char.status] ?? STATUS_COLOR.unknown }}
+            />
+          </TooltipTrigger>
+          <TooltipContent>{char.status}</TooltipContent>
+        </Tooltip>
       </div>
       <span className={styles.charName}>{char.name}</span>
     </button>
