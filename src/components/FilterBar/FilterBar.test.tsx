@@ -1,12 +1,18 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { FilterBar, StatusFilter } from "./FilterBar";
+import { FilterBar, StatusFilter, GenderFilter, SpeciesFilter, OriginFilter } from "./FilterBar";
 
 const makeProps = (overrides = {}) => ({
   search: "",
   status: "" as StatusFilter,
+  gender: "" as GenderFilter,
+  species: "" as SpeciesFilter,
+  origin: "" as OriginFilter,
   onSearchChange: vi.fn(),
   onStatusChange: vi.fn(),
+  onGenderChange: vi.fn(),
+  onSpeciesChange: vi.fn(),
+  onOriginChange: vi.fn(),
   ...overrides,
 });
 
