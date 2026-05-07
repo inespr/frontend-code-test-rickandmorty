@@ -1,40 +1,56 @@
+@use "../../styles/mixins" as *;
+
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+
+  &.clickable {
+    cursor: pointer;
+  }
+}
+
 .card {
   display: flex;
   align-items: center;
   gap: 16px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
   padding: 16px;
-  text-decoration: none;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  animation: fadeUp 400ms both;
+  position: relative;
+  overflow: hidden;
   transition:
     border-color var(--transition),
     background var(--transition),
     transform var(--transition),
     box-shadow var(--transition);
-  animation: fadeUp 400ms both;
-  position: relative;
-  overflow: hidden;
-}
 
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, transparent 60%, var(--accent-glow));
-  opacity: 0;
-  transition: opacity var(--transition);
-}
+  @include mobile {
+    gap: 12px;
+    padding: 12px;
+  }
 
-.card:hover {
-  border-color: var(--border-hover);
-  background: var(--bg-card-hover);
-  transform: translateX(4px);
-  box-shadow: 0 0 0 1px rgba(97, 218, 251, 0.1), 0 8px 32px rgba(0, 0, 0, 0.4);
-}
+  // Gradiente decorativo rojo al hover
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 60%, var(--accent-glow));
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
 
-.card:hover::before {
-  opacity: 1;
+  &:hover {
+    @include card-hover;
+    transform: translateX(4px);
+
+    &::before { opacity: 1; }
+    .image { transform: scale(1.08); }
+    .name { color: var(--accent); }
+    .arrow { color: var(--accent); transform: translateX(4px); }
+  }
 }
 
 .imageWrapper {
@@ -44,6 +60,14 @@
   height: 72px;
   border-radius: 8px;
   overflow: hidden;
+
+  // Borde rojizo en la imagen
+  outline: 1px solid var(--border);
+
+  @include mobile {
+    width: 56px;
+    height: 56px;
+  }
 }
 
 .image {
@@ -53,14 +77,10 @@
   transition: transform var(--transition);
 }
 
-.card:hover .image {
-  transform: scale(1.08);
-}
-
 .imageOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.4));
+  background: linear-gradient(to bottom, transparent 50%, rgba(64, 1, 1, 0.6));
 }
 
 .content {
@@ -74,22 +94,18 @@
 .name {
   font-size: 1rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  @include truncate;
   color: var(--text-primary);
   transition: color var(--transition);
-}
 
-.card:hover .name {
-  color: var(--accent);
+  @include mobile { font-size: 0.9rem; }
 }
 
 .meta {
   display: flex;
   gap: 16px;
-  margin-top: 4px;
+
+  @include mobile { gap: 10px; }
 }
 
 .metaItem {
@@ -99,32 +115,24 @@
 }
 
 .metaLabel {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
+  @include mono-label;
 }
 
 .metaValue {
   font-size: 0.78rem;
   color: var(--text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  @include truncate;
   max-width: 120px;
+
+  @include mobile {
+    max-width: 80px;
+    font-size: 0.72rem;
+  }
 }
 
 .arrow {
   font-size: 1.1rem;
   color: var(--text-muted);
   flex-shrink: 0;
-  transition:
-    color var(--transition),
-    transform var(--transition);
-}
-
-.card:hover .arrow {
-  color: var(--accent);
-  transform: translateX(4px);
+  transition: color var(--transition), transform var(--transition);
 }

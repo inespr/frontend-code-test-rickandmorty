@@ -23,26 +23,28 @@
   background: var(--green-dim);
   border-color: rgba(74, 222, 128, 0.25);
   color: var(--green);
-}
-.alive .dot {
-  background: var(--green);
-  box-shadow: 0 0 6px var(--green);
+
+  .dot {
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+  }
 }
 
 .dead {
   background: var(--red-dim);
-  border-color: rgba(248, 113, 113, 0.25);
+  border-color: rgba(191, 4, 4, 0.25);
   color: var(--red);
-}
-.dead .dot {
-  background: var(--red);
+
+  .dot {
+    background: var(--red);
+    box-shadow: 0 0 6px var(--red);
+  }
 }
 
 .unknown {
   background: var(--yellow-dim);
   border-color: rgba(251, 191, 36, 0.25);
   color: var(--yellow);
-}
-.unknown .dot {
-  background: var(--yellow);
+
+  .dot { background: var(--yellow); }
 }

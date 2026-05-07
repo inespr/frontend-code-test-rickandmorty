@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import styles from "./StatusBadge.module.scss";
 
 interface Props {
@@ -14,9 +15,9 @@ export function StatusBadge({ status }: Props) {
                 : styles.unknown;
 
     return (
-        <span className={`${styles.badge} ${cls}`}>
+        <Badge className={`${styles.badge} ${cls}`}>
             <span className={styles.dot} />
             {status}
-        </span>
+        </Badge>
     );
 }

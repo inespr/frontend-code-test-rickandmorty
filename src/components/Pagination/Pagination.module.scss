@@ -25,11 +25,20 @@
   border-color: var(--border) !important;
   background: var(--bg-card) !important;
   color: var(--text-secondary) !important;
+  transition:
+    border-color var(--transition),
+    color var(--transition),
+    background var(--transition);
 
   &:hover:not(:disabled) {
     border-color: var(--border-hover) !important;
     color: var(--accent) !important;
     background: var(--accent-dim) !important;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
   }
 }
 
@@ -38,6 +47,10 @@
   background: var(--bg-card) !important;
   color: var(--text-secondary) !important;
   min-width: 36px;
+  transition:
+    border-color var(--transition),
+    color var(--transition),
+    background var(--transition);
 
   @include mobile {
     min-width: 32px;
