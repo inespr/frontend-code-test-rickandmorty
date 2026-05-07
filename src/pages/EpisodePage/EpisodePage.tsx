@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Calendar, Users, ArrowLeft } from "lucide-react";
+import { Calendar, Users, ArrowLeft, Search, X } from "lucide-react";
 import { useEpisode } from "../../hooks/useEpisode";
 import { Loader } from "../../components/Loader";
 import { ErrorMessage } from "../../components/ErrorMessage";
@@ -16,14 +16,23 @@ export default function EpisodePage() {
   const location = useLocation();
   const { episode, fetching, error } = useEpisode(id ?? null);
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
 
   const handleCharacter = (charId: string) => {
     navigate(`/character/${charId}`, { state: { background: location } });
   };
 
-  const characters = episode?.characters ?? [];
-  const totalPages = Math.ceil(characters.length / PAGE_SIZE);
-  const paged = characters.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const handleSearch = (val: string) => {
+    setSearch(val);
+    setPage(1);
+  };
+
+  const allCharacters = episode?.characters ?? [];
+  const filtered = search
+    ? allCharacters.filter((c) => c.name.toLowerCase().includes(search.toLowerCase()))
+    : allCharacters;
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div className={styles.page}>
@@ -52,8 +61,28 @@ export default function EpisodePage() {
             <div className={styles.sectionHeader}>
               <Users size={14} className={styles.sectionIcon} />
               <h2 className={styles.sectionTitle}>Characters</h2>
-              <span className={styles.sectionCount}>{characters.length}</span>
+              <span className={styles.sectionCount}>{allCharacters.length}</span>
             </div>
+
+            <div className={styles.searchRow}>
+              <Search size={13} className={styles.searchIcon} />
+              <input
+                type="text"
+                placeholder="Search characters..."
+                value={search}
+                onChange={(e) => handleSearch(e.target.value)}
+                className={styles.searchInput}
+              />
+              {search && (
+                <button className={styles.searchClear} onClick={() => handleSearch("")} aria-label="Clear">
+                  <X size={11} />
+                </button>
+              )}
+            </div>
+
+            {paged.length === 0 && (
+              <p className={styles.noResults}>No characters found.</p>
+            )}
 
             <div className={styles.grid}>
               {paged.map((char) => (

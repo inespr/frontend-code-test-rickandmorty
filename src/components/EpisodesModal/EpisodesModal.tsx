@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Tv2 } from "lucide-react";
+import { Tv2, Search, X } from "lucide-react";
 import { Dialog } from "../Dialog";
 import { useAllEpisodes } from "../../hooks/useAllEpisodes";
 import { Loader } from "../Loader";
@@ -12,9 +12,16 @@ export function EpisodesModal({ onClose }: Props) {
   const navigate = useNavigate();
   const { episodes, fetching } = useAllEpisodes();
   const [season, setSeason] = useState("all");
+  const [search, setSearch] = useState("");
 
   const seasons = [...new Set(episodes.map((ep) => ep.episode.slice(0, 3)))].sort();
-  const filtered = season === "all" ? episodes : episodes.filter((ep) => ep.episode.startsWith(season));
+  const filtered = episodes
+    .filter((ep) => season === "all" || ep.episode.startsWith(season))
+    .filter((ep) => {
+      if (!search) return true;
+      const q = search.toLowerCase();
+      return ep.name.toLowerCase().includes(q) || ep.episode.toLowerCase().includes(q);
+    });
 
   const handleEpisode = (id: string) => {
     onClose();
@@ -50,8 +57,27 @@ export function EpisodesModal({ onClose }: Props) {
           ))}
         </div>
 
+        <div className={styles.searchRow}>
+          <Search size={12} className={styles.searchIcon} />
+          <input
+            type="text"
+            placeholder="Search by name or code..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className={styles.searchInput}
+          />
+          {search && (
+            <button className={styles.searchClear} onClick={() => setSearch("")} aria-label="Clear">
+              <X size={10} />
+            </button>
+          )}
+        </div>
+
         <div className={styles.list}>
           {fetching && episodes.length === 0 && <Loader />}
+          {!fetching && filtered.length === 0 && (
+            <p className={styles.empty}>No episodes found.</p>
+          )}
           {filtered.map((ep) => (
             <div
               key={ep.id}

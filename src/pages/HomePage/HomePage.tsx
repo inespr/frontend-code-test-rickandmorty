@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ChevronDown, ChevronRight, Tv2 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useCharacters } from "../../hooks/useCharacters";
+import { useAllCharacters } from "../../hooks/useAllCharacters";
 import { usePagination } from "../../hooks/usePagination";
 import { useIsMobile } from "../../hooks/useIsMobile";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -39,10 +40,15 @@ export default function HomePage() {
 
   useEffect(() => { goToPage(1); }, [debouncedSearch, status]);
 
-  const { characters, info, fetching, error } = useCharacters(page, {
-    name: debouncedSearch || undefined,
-    status: status || undefined,
-  });
+  const filter = { name: debouncedSearch || undefined, status: status || undefined };
+
+  const paged = useCharacters(page, filter);
+  const all = useAllCharacters(groupBy ? filter : undefined);
+
+  const fetching = groupBy ? all.fetching : paged.fetching;
+  const error = groupBy ? undefined : paged.error;
+  const characters = groupBy ? all.characters : paged.characters;
+  const info = groupBy ? null : paged.info;
 
   const toggleGroup = (key: string) =>
     setCollapsedGroups((prev) => {
@@ -51,7 +57,7 @@ export default function HomePage() {
       return next;
     });
 
-  const displayedCharacters = isMobile ? characters.slice(0, 10) : characters;
+  const displayedCharacters = isMobile && !groupBy ? characters.slice(0, 10) : characters;
 
   const grouped = groupBy
     ? displayedCharacters.reduce((acc, char) => {
@@ -82,7 +88,8 @@ export default function HomePage() {
             <div className={styles.logoRow}>
               <img src="/favicon.svg" alt="" className={styles.logoIcon} aria-hidden="true" />
               <span className={styles.logoBadge}>Rick&Morty</span>
-              {info && <span className={styles.infoCount}>{info.count} characters</span>}
+              {!groupBy && info && <span className={styles.infoCount}>{info.count} characters</span>}
+              {groupBy && !fetching && <span className={styles.infoCount}>{characters.length} characters</span>}
             </div>
             <button className={styles.episodesBtn} onClick={() => setEpisodesOpen(true)}>
               <Tv2 size={13} />
@@ -111,7 +118,7 @@ export default function HomePage() {
         )}
         {error && <ErrorMessage message="Failed to load characters." />}
 
-        {!fetching && !error && info && (
+        {!fetching && !error && (grouped || characters.length > 0 || info) && (
           grouped ? (
             sortedKeys.map((key) => {
               const collapsed = collapsedGroups.has(key);
@@ -141,12 +148,12 @@ export default function HomePage() {
           )
         )}
 
-        {!fetching && !error && info && displayedCharacters.length === 0 && (
+        {!fetching && !error && characters.length === 0 && (
           <p className={styles.noResults}>No characters found.</p>
         )}
       </main>
 
-      {!fetching && !error && info && info.pages > 1 && (
+      {!groupBy && !fetching && !error && info && info.pages > 1 && (
         <footer className={styles.footer}>
           <span className={styles.infoPage}>Page {page} of {info.pages}</span>
           <Pagination currentPage={page} totalPages={info.pages} onPageChange={goToPage} />
