@@ -1,31 +1,42 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import CharacterPage from "./pages/CharacterPage/CharacterPage";
 import { Dialog, DialogContent } from "@/components/Dialog";
 
-export default function App() {
-  const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null);
+function AppRoutes() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const background = location.state?.background;
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <HomePage onCharacterSelect={setSelectedCharacterId} />
-          }
-        />
+    <>
+      <Routes location={background ?? location}>
+        <Route path="/" element={<HomePage />} />
         <Route path="/character/:id" element={<CharacterPage />} />
       </Routes>
 
-      <Dialog open={!!selectedCharacterId} onOpenChange={() => setSelectedCharacterId(null)}>
-        <DialogContent>
-          {selectedCharacterId && (
-            <CharacterPage characterId={selectedCharacterId} isModal />
-          )}
-        </DialogContent>
-      </Dialog>
+      {background && (
+        <Routes>
+          <Route
+            path="/character/:id"
+            element={
+              <Dialog open onOpenChange={() => navigate(-1)}>
+                <DialogContent>
+                  <CharacterPage isModal />
+                </DialogContent>
+              </Dialog>
+            }
+          />
+        </Routes>
+      )}
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
     </BrowserRouter>
   );
 }

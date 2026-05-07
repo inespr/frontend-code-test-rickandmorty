@@ -1,3 +1,4 @@
+import { useNavigate, useLocation } from "react-router-dom";
 import { useCharacters } from "../../hooks/useCharacters";
 import { usePagination } from "../../hooks/usePagination";
 import { useIsMobile } from "../../hooks/useIsMobile";
@@ -7,11 +8,9 @@ import { Loader } from "../../components/Loader";
 import { ErrorMessage } from "../../components/ErrorMessage";
 import styles from "./HomePage.module.scss";
 
-interface Props {
-  onCharacterSelect?: (id: string) => void;
-}
-
-export default function HomePage({ onCharacterSelect }: Props) {
+export default function HomePage() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { page, goToPage } = usePagination();
   const { characters, info, fetching, error } = useCharacters(page);
   const isMobile = useIsMobile();
@@ -44,7 +43,11 @@ export default function HomePage({ onCharacterSelect }: Props) {
                 <CharacterCard
                   character={character}
                   index={i}
-                  onClick={() => onCharacterSelect?.(character.id)}
+                  onClick={() =>
+                    navigate(`/character/${character.id}`, {
+                      state: { background: location },
+                    })
+                  }
                 />
               </li>
             ))}
