@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useCharacter } from "../../hooks/useCharacter";
@@ -5,6 +6,7 @@ import { StatusBadge } from "../../components/StatusBadge";
 import { EpisodeNavigator } from "../../components/EpisodeNavigator";
 import { Loader } from "../../components/Loader";
 import { ErrorMessage } from "../../components/ErrorMessage";
+import { Dialog } from "../../components/Dialog";
 import styles from "./CharacterPage.module.scss";
 
 interface Props {
@@ -17,6 +19,7 @@ export default function CharacterPage({ characterId, isModal }: Props) {
   const navigate = useNavigate();
   const id = characterId || paramId;
   const { character, fetching, error } = useCharacter(id);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   return (
     <div className={`${styles.page} ${isModal ? styles.modalPage : ''}`}>
@@ -39,14 +42,21 @@ export default function CharacterPage({ characterId, isModal }: Props) {
       {character && (
         <main className={`${styles.main} ${isModal ? styles.modalMain : ''}`} data-testid="character-detail">
           <div className={styles.hero}>
-            <div className={styles.imageWrapper}>
-              <img
-                src={character.image}
-                alt={character.name}
-                className={styles.image}
-              />
-              <div className={styles.imageGlow} />
-            </div>
+            <button
+              className={styles.imageBtn}
+              onClick={() => setLightboxOpen(true)}
+              aria-label={`View ${character.name} full size`}
+            >
+              <div className={styles.imageWrapper}>
+                <img
+                  src={character.image}
+                  alt={character.name}
+                  className={styles.image}
+                />
+                <div className={styles.imageGlow} />
+                <div className={styles.imageHint}>Abrir</div>
+              </div>
+            </button>
 
             <div className={styles.heroInfo}>
               <h1 className={styles.name}>{character.name}</h1>
@@ -73,6 +83,17 @@ export default function CharacterPage({ characterId, isModal }: Props) {
             <EpisodeNavigator episodes={character.episode} />
           )}
         </main>
+      )}
+
+      {character && (
+        <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen} bare>
+          <img
+            src={character.image}
+            alt={character.name}
+            className={styles.lightboxImage}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </Dialog>
       )}
     </div>
   );

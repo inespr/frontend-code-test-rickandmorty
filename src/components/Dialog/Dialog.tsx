@@ -5,6 +5,7 @@ interface DialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     children: React.ReactNode;
+    bare?: boolean;
 }
 
 interface DialogContentProps {
@@ -12,7 +13,7 @@ interface DialogContentProps {
     className?: string;
 }
 
-export function Dialog({ open, onOpenChange, children }: DialogProps) {
+export function Dialog({ open, onOpenChange, children, bare }: DialogProps) {
     React.useEffect(() => {
         if (open) {
             document.body.style.overflow = "hidden";
@@ -28,16 +29,22 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
 
     return (
         <div className="dialog-overlay" onClick={() => onOpenChange(false)}>
-            <div className="dialog-container" onClick={(e) => e.stopPropagation()}>
-                <div className="dialog-close-bar">
-                    <button
-                        className="dialog-close-btn"
-                        onClick={() => onOpenChange(false)}
-                        aria-label="Close"
-                    >
-                        ✕
-                    </button>
-                </div>
+            <div
+                className="dialog-container"
+                data-bare={bare ? "true" : undefined}
+                onClick={(e) => e.stopPropagation()}
+            >
+                {!bare && (
+                    <div className="dialog-close-bar">
+                        <button
+                            className="dialog-close-btn"
+                            onClick={() => onOpenChange(false)}
+                            aria-label="Close"
+                        >
+                            ✕
+                        </button>
+                    </div>
+                )}
                 {children}
             </div>
         </div>

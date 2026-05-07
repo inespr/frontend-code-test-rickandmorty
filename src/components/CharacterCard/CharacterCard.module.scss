@@ -47,7 +47,7 @@
     transform: scale(1.02) translateY(-2px);
 
     &::before { opacity: 1; }
-    .image { transform: scale(1.06); }
+    .image { transform: scale(1.15); }
     .name { color: var(--accent); }
     .arrow { color: var(--accent); transform: translateX(4px); }
   }

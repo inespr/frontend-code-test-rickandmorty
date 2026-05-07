@@ -73,9 +73,26 @@
   }
 }
 
+.imageBtn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: zoom-in;
+  border-radius: var(--radius);
+
+  &:hover .image {
+    transform: scale(1.04);
+    border-color: var(--border-hover);
+  }
+
+  &:hover .imageHint {
+    opacity: 1;
+  }
+}
+
 .imageWrapper {
   position: relative;
-  flex-shrink: 0;
   width: 220px;
   height: 220px;
   border-radius: var(--radius);
@@ -93,6 +110,21 @@
   border: 1px solid var(--border);
   position: relative;
   z-index: 1;
+  transition: transform 220ms ease, border-color 220ms ease;
+}
+
+.imageHint {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  font-size: 1.4rem;
+  opacity: 0;
+  transition: opacity 220ms ease;
+  z-index: 2;
 }
 
 // Halo rojo detrás de la imagen
@@ -172,4 +204,21 @@
   font-size: 0.88rem;
   color: var(--text-secondary);
   font-weight: 500;
+}
+
+.lightboxContent {
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.lightboxImage {
+  display: block;
+  max-width: min(500px, 90vw);
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
 }

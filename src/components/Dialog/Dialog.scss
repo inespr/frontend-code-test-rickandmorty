@@ -8,6 +8,7 @@
   z-index: 1000;
   backdrop-filter: blur(2px);
   animation: fadeIn 200ms ease-out;
+  flex-direction: column;
 
   @media (max-width: 768px) {
     align-items: flex-start;
@@ -92,4 +93,13 @@
 
 .dialog-content {
   width: 100%;
+}
+
+.dialog-container[data-bare] {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  width: auto;
+  max-height: none;
+  overflow: visible;
 }
