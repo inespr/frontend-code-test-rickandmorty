@@ -31,7 +31,7 @@ describe("Home page", () => {
   });
 
   it("filters by name", () => {
-    cy.get("input[placeholder='Search by name...']").type("Rick");
+    cy.get("input[placeholder='Search by name, species...']").type("Rick");
     cy.get("[data-testid='character-card']", { timeout: 5000 }).should(
       "have.length.greaterThan",
       0
@@ -40,12 +40,13 @@ describe("Home page", () => {
   });
 
   it("shows no-results message when search has no matches", () => {
-    cy.get("input[placeholder='Search by name...']").type("xyzxyzxyz");
+    cy.get("input[placeholder='Search by name, species...']").type("xyzxyzxyz");
     cy.get("[data-testid='character-card']", { timeout: 5000 }).should("not.exist");
   });
 
   it("filters by status chip", () => {
-    cy.contains("button", "Alive").click();
+    cy.get("[data-slot='select-trigger']").first().click();
+    cy.contains("[role='option']", "Alive").click();
     cy.get("[data-testid='character-card']", { timeout: 5000 }).should(
       "have.length.greaterThan",
       0
