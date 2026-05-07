@@ -2,39 +2,35 @@
 
 :root {
 
-  // ── Paleta principal ───────────────────────────────────────────────
+  //Paleta de colores 
 
-  --red-primary:  #BF0404;   // rojo principal — botones, accents
-  --red-dark:     #730202;   // rojo oscuro — hover, bordes activos
-  --red-deeper:   #400101;   // rojo más profundo — fondos de cards
-  --white:        #F2F2F2;   // blanco roto — texto principal
-  --black:        #0D0D0D;   // negro profundo — fondo base
+  --red-primary:  #BF0404;   //rojo principal
+  --red-dark:     #730202;   //rojo oscuro
+  --red-deeper:   #400101;   //rojo más profundo
+  --white:        #F2F2F2;   //blanco roto
+  --black:        #0D0D0D;   // negro profundo
 
-  // ── Fondos ────────────────────────────────────────────────────────
+  // Fondos
 
   --bg:           #0D0D0D;
   --bg-card:      #150101;
   --bg-card-hover:#1f0101;
 
-  // ── Bordes ────────────────────────────────────────────────────────
+  // Bordes
 
   --border:       rgba(191, 4, 4, 0.15);
   --border-hover: rgba(191, 4, 4, 0.6);
 
-  // ── Texto ─────────────────────────────────────────────────────────
+  //Texto
 
   --text-primary:   #F2F2F2;
   --text-secondary: #d4b4b4;
   --text-muted:     #9a7272;
 
-  // ── Acento (antes --accent, ahora el rojo) ────────────────────────
 
   --accent:       #BF0404;
   --accent-dim:   rgba(191, 4, 4, 0.15);
   --accent-glow:  rgba(191, 4, 4, 0.08);
-
-  // ── Estados de status ─────────────────────────────────────────────
-
   --green:        #4ade80;
   --green-dim:    rgba(74, 222, 128, 0.15);
   --red:          #BF0404;
@@ -42,19 +38,16 @@
   --yellow:       #fbbf24;
   --yellow-dim:   rgba(251, 191, 36, 0.15);
 
-  // ── Tipografía ────────────────────────────────────────────────────
+  //  Tipografía
 
   --font-display: "Space Grotesk", sans-serif;
   --font-mono:    "DM Mono", monospace;
-
-  // ── Radios y transición ───────────────────────────────────────────
 
   --radius:       12px;
   --radius-sm:    6px;
   --transition:   220ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-// ── Reset ──────────────────────────────────────────────────────────────────
 
 *, *::before, *::after {
   box-sizing: border-box;
