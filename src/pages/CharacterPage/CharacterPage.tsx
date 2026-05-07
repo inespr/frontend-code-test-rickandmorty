@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Dna, User, MapPin } from "lucide-react";
 import { useCharacter } from "../../hooks/useCharacter";
 import { StatusBadge } from "../../components/StatusBadge";
 import { EpisodeNavigator } from "../../components/EpisodeNavigator";
@@ -22,7 +23,7 @@ export default function CharacterPage({ characterId, isModal }: Props) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   return (
-    <div className={`${styles.page} ${isModal ? styles.modalPage : ''}`}>
+    <div className={`${styles.page} ${isModal ? styles.modalPage : ""}`}>
       {!isModal && (
         <div className={styles.topBar}>
           <Button
@@ -40,42 +41,37 @@ export default function CharacterPage({ characterId, isModal }: Props) {
       {error && <ErrorMessage message="Failed to load character." />}
 
       {character && (
-        <main className={`${styles.main} ${isModal ? styles.modalMain : ''}`} data-testid="character-detail">
+        <main className={`${styles.main} ${isModal ? styles.modalMain : ""}`} data-testid="character-detail">
           <div className={styles.hero}>
-            <button
-              className={styles.imageBtn}
-              onClick={() => setLightboxOpen(true)}
-              aria-label={`View ${character.name} full size`}
-            >
-              <div className={styles.imageWrapper}>
-                <img
-                  src={character.image}
-                  alt={character.name}
-                  className={styles.image}
-                />
-                <div className={styles.imageGlow} />
-                <div className={styles.imageHint}>Abrir</div>
-              </div>
-            </button>
+            <div className={styles.imageFigure}>
+              <div className={styles.imageGlow} />
+              <button
+                className={styles.imageBtn}
+                onClick={() => setLightboxOpen(true)}
+                aria-label={`View ${character.name} full size`}
+              >
+                <div className={styles.imageWrapper}>
+                  <img src={character.image} alt={character.name} className={styles.image} />
+                  <div className={styles.imageHint}>⊕</div>
+                </div>
+              </button>
+            </div>
 
             <div className={styles.heroInfo}>
-              <h1 className={styles.name}>{character.name}</h1>
-              <StatusBadge status={character.status} />
+              <div className={styles.nameRow}>
+                <h1 className={styles.name}>{character.name}</h1>
+                <StatusBadge status={character.status} />
+              </div>
 
-              <dl className={styles.fields}>
-                {(
-                  [
-                    ["Species", character.species],
-                    ["Gender", character.gender],
-                    ["Origin", character.origin.name],
-                  ] as [string, string][]
-                ).map(([label, value]) => (
-                  <div key={label} className={styles.field}>
-                    <dt className={styles.fieldLabel}>{label}</dt>
-                    <dd className={styles.fieldValue}>{value}</dd>
-                  </div>
-                ))}
-              </dl>
+              <div className={styles.pills}>
+                <span className={styles.pill}><Dna size={11} />{character.species}</span>
+                <span className={styles.pill}><User size={11} />{character.gender}</span>
+              </div>
+
+              <div className={styles.originRow}>
+                <MapPin size={11} className={styles.originIcon} />
+                <span className={styles.originValue}>{character.origin.name}</span>
+              </div>
             </div>
           </div>
 

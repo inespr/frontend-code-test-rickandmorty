@@ -12,6 +12,7 @@ interface Props {
   onOriginChange: (origin: string) => void;
   onStatusChange: (status: StatusFilter) => void;
   onGroupByOriginChange: (v: boolean) => void;
+  className?: string;
 }
 
 const STATUS_OPTIONS: { value: StatusFilter; label: string }[] = [
@@ -30,9 +31,10 @@ export function FilterBar({
   onOriginChange,
   onStatusChange,
   onGroupByOriginChange,
+  className,
 }: Props) {
   return (
-    <div className={styles.bar}>
+    <div className={[styles.bar, className].filter(Boolean).join(" ")}>
       <div className={styles.inputs}>
         <div className={styles.search}>
           <Search className={styles.searchIcon} size={13} />

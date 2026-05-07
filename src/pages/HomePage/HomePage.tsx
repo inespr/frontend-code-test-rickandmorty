@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, Tv2 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useCharacters } from "../../hooks/useCharacters";
 import { usePagination } from "../../hooks/usePagination";
@@ -7,6 +7,7 @@ import { useIsMobile } from "../../hooks/useIsMobile";
 import { useDebounce } from "../../hooks/useDebounce";
 import { CharacterCard } from "../../components/CharacterCard";
 import { FilterBar, StatusFilter } from "../../components/FilterBar";
+import { EpisodesModal } from "../../components/EpisodesModal/EpisodesModal";
 import { Pagination } from "../../components/Pagination";
 import { Loader } from "../../components/Loader";
 import { ErrorMessage } from "../../components/ErrorMessage";
@@ -23,6 +24,7 @@ export default function HomePage() {
   const [status, setStatus] = useState<StatusFilter>("");
   const [groupByOrigin, setGroupByOrigin] = useState(false);
   const [collapsedOrigins, setCollapsedOrigins] = useState<Set<string>>(new Set());
+  const [episodesOpen, setEpisodesOpen] = useState(false);
   const debouncedName = useDebounce(nameInput, 400);
 
   const toggleOrigin = (origin: string) =>
@@ -75,33 +77,34 @@ export default function HomePage() {
     <div className={styles.page}>
       <header className={styles.header}>
         <div className={styles.headerInner}>
-          <div className={styles.logoRow}>
-            <img src="/favicon.svg" alt="" className={styles.logoIcon} aria-hidden="true" />
-            <span className={styles.logoBadge}>Rick&Morty</span>
-            {info && (
-              <span className={styles.infoCount}>{info.count} characters</span>
-            )}
+          <div className={styles.headerTop}>
+            <div className={styles.logoRow}>
+              <img src="/favicon.svg" alt="" className={styles.logoIcon} aria-hidden="true" />
+              <span className={styles.logoBadge}>Rick&Morty</span>
+              {info && (
+                <span className={styles.infoCount}>{info.count} characters</span>
+              )}
+            </div>
+            <button className={styles.episodesBtn} onClick={() => setEpisodesOpen(true)}>
+              <Tv2 size={13} />
+              <span className={styles.episodesBtnLabel}>Episodes</span>
+            </button>
           </div>
-          <p className={styles.subtitle}>
-            All the characters from the Rick and Morty universe in one place.
-          </p>
-          <p className={styles.subtitle}>
-            Click on a character to see which episodes they have appeared in.
-          </p>
+          <FilterBar
+            name={nameInput}
+            origin={originInput}
+            status={status}
+            groupByOrigin={groupByOrigin}
+            onNameChange={setNameInput}
+            onOriginChange={setOriginInput}
+            onStatusChange={setStatus}
+            onGroupByOriginChange={setGroupByOrigin}
+            className={styles.headerFilter}
+          />
         </div>
       </header>
 
       <main className={styles.main}>
-        <FilterBar
-          name={nameInput}
-          origin={originInput}
-          status={status}
-          groupByOrigin={groupByOrigin}
-          onNameChange={setNameInput}
-          onOriginChange={setOriginInput}
-          onStatusChange={setStatus}
-          onGroupByOriginChange={setGroupByOrigin}
-        />
 
         {fetching && <Loader fullPage />}
         {error && <ErrorMessage message="Failed to load characters." />}
@@ -141,7 +144,7 @@ export default function HomePage() {
           )
         )}
 
-        {!fetching && !error && info?.count === 0 && (
+        {!fetching && !error && info && displayedCharacters.length === 0 && (
           <p className={styles.noResults}>No characters found.</p>
         )}
       </main>
@@ -156,6 +159,7 @@ export default function HomePage() {
           />
         </footer>
       )}
+      {episodesOpen && <EpisodesModal onClose={() => setEpisodesOpen(false)} />}
     </div>
   );
 }

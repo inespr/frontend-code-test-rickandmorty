@@ -1,4 +1,3 @@
-import { Card } from "@/components/ui/card";
 import { Character } from "../../types";
 import { StatusBadge } from "../StatusBadge";
 import styles from "./CharacterCard.module.scss";
@@ -15,35 +14,29 @@ export function CharacterCard({ character, index, onClick }: Props) {
             onClick={onClick}
             data-testid="character-card"
             style={{ animationDelay: `${index * 40}ms` }}
-            className={`${styles.link} ${onClick ? styles.clickable : ''}`}
+            className={`${styles.card} ${onClick ? styles.clickable : ""}`}
         >
-            <Card className={styles.card}>
-                <div className={styles.imageWrapper}>
-                    <img
-                        src={character.image}
-                        alt={character.name}
-                        className={styles.image}
-                        loading="lazy"
-                    />
-                </div>
+            <img
+                src={character.image}
+                alt={character.name}
+                className={styles.bg}
+                loading="lazy"
+            />
+            <div className={styles.overlay} />
 
-                <div className={styles.content}>
-                    <h2 className={styles.name}>{character.name}</h2>
+            <div className={styles.content}>
+                <div className={styles.topRow}>
                     <StatusBadge status={character.status} />
+                </div>
+                <div className={styles.bottom}>
+                    <h2 className={styles.name}>{character.name}</h2>
                     <div className={styles.meta}>
-                        <div className={styles.metaItem}>
-                            <span className={styles.metaLabel}>Species</span>
-                            <span className={styles.metaValue}>{character.species}</span>
-                        </div>
-                        <div className={styles.metaItem}>
-                            <span className={styles.metaLabel}>Origin</span>
-                            <span className={styles.metaValue}>{character.origin.name}</span>
-                        </div>
+                        <span>{character.species}</span>
+                        <span className={styles.sep}>·</span>
+                        <span className={styles.origin}>{character.origin.name}</span>
                     </div>
                 </div>
-
-                <div className={styles.arrow}>›</div>
-            </Card>
+            </div>
         </div>
     );
 }

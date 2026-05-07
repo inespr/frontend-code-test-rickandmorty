@@ -29,6 +29,25 @@ export interface Character {
   episode?: Episode[];
 }
 
+export interface EpisodeCharacter {
+  id: string;
+  name: string;
+  image: string;
+  status: "Alive" | "Dead" | "unknown";
+}
+
+export interface EpisodeDetail {
+  id: string;
+  name: string;
+  air_date: string;
+  episode: string;
+  characters: EpisodeCharacter[];
+}
+
+export interface EpisodeDetailResponse {
+  episode: EpisodeDetail;
+}
+
 export interface CharactersResponse {
   characters: {
     info: CharacterInfo;

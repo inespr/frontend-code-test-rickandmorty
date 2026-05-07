@@ -4,7 +4,6 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 16px;
   flex-wrap: wrap;
 }
 
@@ -14,6 +13,10 @@
   flex: 1;
   min-width: 0;
   flex-wrap: wrap;
+
+  @include mobile {
+    flex-basis: 100%;
+  }
 }
 
 .search {
@@ -69,7 +72,10 @@
   gap: 6px;
   flex-wrap: wrap;
 
-  @include mobile { gap: 5px; }
+  @include mobile {
+    gap: 5px;
+    flex-basis: 100%;
+  }
 }
 
 .chip {

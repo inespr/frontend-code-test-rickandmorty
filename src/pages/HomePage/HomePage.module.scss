@@ -32,34 +32,35 @@
   top: 0;
   left: 0;
   right: 0;
-  padding: 24px 24px 20px;
+  padding: 16px 24px 14px;
   border-bottom: 1px solid var(--border);
   background: var(--bg);
   z-index: 20;
   overflow: hidden;
 
-  @include tablet { padding: 20px 20px 16px; }
-  @include mobile { padding: 16px 16px 12px; }
-
-  &::before {
-    content: "R&M";
-    position: absolute;
-    right: -20px;
-    top: -20px;
-    font-size: 14rem;
-    font-weight: 800;
-    color: rgba(191, 4, 4, 0.04);
-    pointer-events: none;
-    user-select: none;
-    line-height: 1;
-
-    @include mobile { font-size: 6rem; }
-  }
+  @include tablet { padding: 14px 20px 12px; }
+  @include mobile { padding: 12px 16px 10px; }
 }
 
 .headerInner {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.headerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+
+  @include mobile {
+    margin-bottom: 10px;
+  }
+}
+
+.headerFilter {
+  margin-bottom: 0;
 }
 
 .logo {
@@ -95,16 +96,55 @@
 
 .subtitle {
   @include mono-label;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
+  text-align: right;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color var(--transition);
+
+  &:hover { color: var(--text-secondary); .subtitleLink { color: var(--accent); } }
+
+  @include mobile { display: none; }
+}
+
+.episodesBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color var(--transition), color var(--transition), background var(--transition);
+
+  svg { color: var(--accent); flex-shrink: 0; }
+
+  &:hover {
+    border-color: var(--border-hover);
+    color: var(--text-secondary);
+    background: var(--bg-card-hover);
+  }
+}
+
+.episodesBtnLabel {
+  @include mobile { display: none; }
 }
 
 .logoRow {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 12px;
 
-  @include mobile { gap: 12px; margin-bottom: 8px; }
+  @include mobile { gap: 12px; }
 }
 
 .logoIcon {
@@ -136,11 +176,11 @@
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  margin-top: 120px;
+  margin-top: 138px;
   padding: 32px 24px 80px;
 
-  @include tablet { padding: 24px 20px 80px; margin-top: 110px; }
-  @include mobile { padding: 16px 16px 72px; margin-top: 145px; }
+  @include tablet { padding: 24px 20px 80px; margin-top: 132px; }
+  @include mobile { padding: 16px 16px 72px; margin-top: 160px; }
 }
 
 .info {
@@ -188,18 +228,15 @@
   list-style: none;
   display: grid;
   gap: 10px;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(4, 1fr);
 
   @include tablet {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @include desktop {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   @include mobile {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 }
 

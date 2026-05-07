@@ -16,6 +16,12 @@
     padding: 16px 0 32px;
   }
 
+  &:has([data-bare]) {
+    align-items: center;
+    overflow-y: unset;
+    padding: 0;
+  }
+
   @keyframes fadeIn {
     from {
       opacity: 0;

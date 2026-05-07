@@ -74,12 +74,11 @@
 }
 
 .imageBtn {
-  flex-shrink: 0;
   background: none;
   border: none;
   padding: 0;
   cursor: zoom-in;
-  border-radius: var(--radius);
+  border-radius: 50%;
 
   &:hover .image {
     transform: scale(1.04);
@@ -93,62 +92,75 @@
 
 .imageWrapper {
   position: relative;
-  width: 220px;
-  height: 220px;
-  border-radius: var(--radius);
-  overflow: visible;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--border);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  z-index: 1;
 
-  @include tablet { width: 180px; height: 180px; }
-  @include mobile { width: 160px; height: 160px; }
+  @include tablet { width: 170px; height: 170px; }
+  @include mobile { width: 150px; height: 150px; }
+}
+
+.imageBtn:hover .imageWrapper {
+  border-color: rgba(191, 4, 4, 0.6);
+  box-shadow: 0 0 0 5px rgba(191, 4, 4, 0.12), 0 0 28px rgba(191, 4, 4, 0.3);
 }
 
 .image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  position: relative;
-  z-index: 1;
-  transition: transform 220ms ease, border-color 220ms ease;
+  transition: transform 220ms ease;
 }
 
 .imageHint {
   position: absolute;
   inset: 0;
-  border-radius: var(--radius);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.35);
-  font-size: 1.4rem;
+  background: rgba(0, 0, 0, 0.4);
+  font-size: 1.6rem;
   opacity: 0;
   transition: opacity 220ms ease;
   z-index: 2;
 }
 
-// Halo rojo detrás de la imagen
+.imageFigure {
+  position: relative;
+  flex-shrink: 0;
+}
+
 .imageGlow {
   position: absolute;
-  inset: -4px;
-  border-radius: calc(var(--radius) + 4px);
-  background: linear-gradient(
-    135deg,
-    rgba(191, 4, 4, 0.3),
-    rgba(64, 1, 1, 0.2)
-  );
-  filter: blur(16px);
-  z-index: 0;
+  inset: -16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(191, 4, 4, 0.3) 0%, transparent 70%);
+  filter: blur(18px);
+  pointer-events: none;
 }
 
 .heroInfo {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding-top: 4px;
+  gap: 14px;
+  padding-top: 8px;
 
-  @include mobile { width: 100%; }
+  @include mobile { width: 100%; align-items: center; }
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  @include mobile { justify-content: center; }
 }
 
 .name {
@@ -162,48 +174,44 @@
   @include mobile { font-size: 1.5rem; }
 }
 
-.fields {
-  margin-top: 8px;
+.pills {
   display: flex;
-  flex-direction: column;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  overflow: hidden;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  @include mobile { justify-content: center; }
 }
 
-.field {
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  background: rgba(191, 4, 4, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+
+  svg { color: var(--accent); flex-shrink: 0; }
+}
+
+.originRow {
   display: flex;
   align-items: center;
-  padding: 10px 14px;
-  gap: 12px;
-  border-bottom: 1px solid var(--border);
+  gap: 6px;
+  color: var(--text-muted);
 
-  &:last-child { border-bottom: none; }
-
-  &:nth-child(even) {
-    background: rgba(191, 4, 4, 0.03);
-  }
-
-  @include mobile {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-    padding: 10px 12px;
-  }
+  @include mobile { justify-content: center; }
 }
 
-.fieldLabel {
-  @include mono-label;
-  width: 70px;
-  flex-shrink: 0;
+.originIcon { color: var(--accent); flex-shrink: 0; }
 
-  @include mobile { width: auto; }
-}
-
-.fieldValue {
-  font-size: 0.88rem;
+.originValue {
+  font-size: 0.82rem;
   color: var(--text-secondary);
-  font-weight: 500;
+  font-style: italic;
 }
 
 .lightboxContent {
@@ -215,10 +223,15 @@
 
 .lightboxImage {
   display: block;
-  max-width: min(500px, 90vw);
-  max-height: 90vh;
+  max-width: min(520px, 90vw);
+  max-height: 85vh;
   width: auto;
   height: auto;
   border-radius: var(--radius);
   border: 1px solid var(--border);
+
+  @include mobile {
+    max-width: 92vw;
+    max-height: 75vh;
+  }
 }

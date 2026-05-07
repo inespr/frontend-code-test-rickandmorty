@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import CharacterPage from "./pages/CharacterPage/CharacterPage";
+import EpisodePage from "./pages/EpisodePage/EpisodePage";
 import { Dialog, DialogContent } from "@/components/Dialog";
 
 function AppRoutes() {
@@ -13,6 +14,7 @@ function AppRoutes() {
       <Routes location={background ?? location}>
         <Route path="/" element={<HomePage />} />
         <Route path="/character/:id" element={<CharacterPage />} />
+        <Route path="/episode/:id" element={<EpisodePage />} />
       </Routes>
 
       {background && (
