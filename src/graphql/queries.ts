@@ -1,6 +1,6 @@
 export const GET_CHARACTERS = `
-  query GetCharacters($page: Int) {
-    characters(page: $page) {
+  query GetCharacters($page: Int, $filter: FilterCharacter) {
+    characters(page: $page, filter: $filter) {
       info {
         count
         pages

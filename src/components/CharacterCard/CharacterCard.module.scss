@@ -28,10 +28,8 @@
     box-shadow var(--transition);
 
   @include mobile {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    padding: 0;
+    gap: 12px;
+    padding: 12px;
   }
 
   // Gradiente decorativo rojo al hover
@@ -46,10 +44,10 @@
 
   &:hover {
     @include card-hover;
-    transform: translateX(4px);
+    transform: scale(1.02) translateY(-2px);
 
     &::before { opacity: 1; }
-    .image { transform: scale(1.08); }
+    .image { transform: scale(1.06); }
     .name { color: var(--accent); }
     .arrow { color: var(--accent); transform: translateX(4px); }
   }
@@ -67,10 +65,8 @@
   outline: 1px solid var(--border);
 
   @include mobile {
-    width: 100%;
-    height: 160px;
-    border-radius: 0;
-    outline: none;
+    width: 72px;
+    height: 72px;
   }
 }
 
@@ -94,9 +90,6 @@
   flex-direction: column;
   gap: 6px;
 
-  @include mobile {
-    padding: 12px 14px 14px;
-  }
 }
 
 .name {
@@ -106,12 +99,7 @@
   color: var(--text-primary);
   transition: color var(--transition);
 
-  @include mobile {
-    font-size: 1rem;
-    white-space: normal;
-    overflow: visible;
-    text-overflow: clip;
-  }
+  @include mobile { font-size: 0.9rem; }
 }
 
 .meta {
@@ -140,10 +128,8 @@
   max-width: 120px;
 
   @include mobile {
-    max-width: none;
-    font-size: 0.75rem;
-    white-space: normal;
-    overflow: visible;
+    max-width: 140px;
+    font-size: 0.72rem;
   }
 }
 

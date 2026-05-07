@@ -2,10 +2,17 @@ import { useQuery } from "urql";
 import { GET_CHARACTERS } from "../graphql/queries";
 import { CharactersResponse } from "../types";
 
-export function useCharacters(page: number) {
+export interface CharacterFilter {
+  name?: string;
+  status?: string;
+}
+
+export function useCharacters(page: number, filter?: CharacterFilter) {
+  const hasFilter = filter && (filter.name || filter.status);
+
   const [{ data, fetching, error }] = useQuery<CharactersResponse>({
     query: GET_CHARACTERS,
-    variables: { page },
+    variables: { page, filter: hasFilter ? filter : undefined },
   });
 
   return {

@@ -37,45 +37,47 @@ export function EpisodeNavigator({ episodes }: Props) {
         </div>
       </div>
 
-      <div className={styles.controls}>
-        <Button
-          variant="outline"
-          size="sm"
-          className={styles.navBtn}
-          onClick={goPrev}
-          disabled={!hasPrev}
-          aria-label="Previous episode"
-        >
-          ← Prev
-        </Button>
+      {total > 1 && (
+        <div className={styles.controls}>
+          <Button
+            variant="outline"
+            size="sm"
+            className={styles.navBtn}
+            onClick={goPrev}
+            disabled={!hasPrev}
+            aria-label="Previous episode"
+          >
+            ← Prev
+          </Button>
 
-        <div className={styles.dots}>
-          {sorted
-            .slice(Math.max(0, currentIndex - 2), currentIndex + 3)
-            .map((_, i) => {
-              const realIdx = Math.max(0, currentIndex - 2) + i;
-              return (
-                <button
-                  key={realIdx}
-                  className={`${styles.dot} ${realIdx === currentIndex ? styles.dotActive : ""}`}
-                  onClick={() => goTo(realIdx)}
-                  aria-label={`Episode ${realIdx + 1}`}
-                />
-              );
-            })}
+          <div className={styles.dots}>
+            {sorted
+              .slice(Math.max(0, currentIndex - 2), currentIndex + 3)
+              .map((_, i) => {
+                const realIdx = Math.max(0, currentIndex - 2) + i;
+                return (
+                  <button
+                    key={realIdx}
+                    className={`${styles.dot} ${realIdx === currentIndex ? styles.dotActive : ""}`}
+                    onClick={() => goTo(realIdx)}
+                    aria-label={`Episode ${realIdx + 1}`}
+                  />
+                );
+              })}
+          </div>
+
+          <Button
+            variant="outline"
+            size="sm"
+            className={styles.navBtn}
+            onClick={goNext}
+            disabled={!hasNext}
+            aria-label="Next episode"
+          >
+            Next →
+          </Button>
         </div>
-
-        <Button
-          variant="outline"
-          size="sm"
-          className={styles.navBtn}
-          onClick={goNext}
-          disabled={!hasNext}
-          aria-label="Next episode"
-        >
-          Next →
-        </Button>
-      </div>
+      )}
     </section>
   );
 }

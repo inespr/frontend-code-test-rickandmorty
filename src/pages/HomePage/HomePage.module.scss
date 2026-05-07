@@ -18,7 +18,7 @@
   z-index: 10;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
   gap: 16px;
 
   @include mobile {
@@ -189,4 +189,17 @@
   @include desktop {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.noResults {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 48px 0;
+  letter-spacing: 0.06em;
 }
