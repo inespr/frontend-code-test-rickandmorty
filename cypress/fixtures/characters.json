@@ -1,0 +1,29 @@
+{
+  "data": {
+    "characters": {
+      "info": { "count": 2, "pages": 1, "next": null, "prev": null },
+      "results": [
+        {
+          "id": "1",
+          "name": "Rick Sanchez",
+          "status": "Alive",
+          "species": "Human",
+          "gender": "Male",
+          "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+          "origin": { "name": "Earth (C-137)" },
+          "episode": [{ "id": "1", "name": "Pilot", "air_date": "December 2, 2013", "episode": "S01E01" }]
+        },
+        {
+          "id": "2",
+          "name": "Morty Smith",
+          "status": "Alive",
+          "species": "Human",
+          "gender": "Male",
+          "image": "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+          "origin": { "name": "Earth (C-137)" },
+          "episode": [{ "id": "1", "name": "Pilot", "air_date": "December 2, 2013", "episode": "S01E01" }]
+        }
+      ]
+    }
+  }
+}
