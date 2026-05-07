@@ -19,7 +19,7 @@ export default function CharacterPage({ characterId, isModal }: Props) {
   const { character, fetching, error } = useCharacter(id);
 
   return (
-    <div className={styles.page}>
+    <div className={`${styles.page} ${isModal ? styles.modalPage : ''}`}>
       {!isModal && (
         <div className={styles.topBar}>
           <Button

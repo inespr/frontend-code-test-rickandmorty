@@ -29,6 +29,15 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
     return (
         <div className="dialog-overlay" onClick={() => onOpenChange(false)}>
             <div className="dialog-container" onClick={(e) => e.stopPropagation()}>
+                <div className="dialog-close-bar">
+                    <button
+                        className="dialog-close-btn"
+                        onClick={() => onOpenChange(false)}
+                        aria-label="Close"
+                    >
+                        ✕
+                    </button>
+                </div>
                 {children}
             </div>
         </div>

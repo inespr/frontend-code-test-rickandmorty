@@ -1,5 +1,6 @@
 import { useCharacters } from "../../hooks/useCharacters";
 import { usePagination } from "../../hooks/usePagination";
+import { useIsMobile } from "../../hooks/useIsMobile";
 import { CharacterCard } from "../../components/CharacterCard";
 import { Pagination } from "../../components/Pagination";
 import { Loader } from "../../components/Loader";
@@ -13,6 +14,8 @@ interface Props {
 export default function HomePage({ onCharacterSelect }: Props) {
   const { page, goToPage } = usePagination();
   const { characters, info, fetching, error } = useCharacters(page);
+  const isMobile = useIsMobile();
+  const displayedCharacters = isMobile ? characters.slice(0, 10) : characters;
 
   return (
     <div className={styles.page}>
@@ -25,7 +28,7 @@ export default function HomePage({ onCharacterSelect }: Props) {
             )}
           </div>
           <p className={styles.subtitle}>
-            Explore all characters from the Rick and Morty universe. Click on a character to see more details about them.
+            Click on a character to see which episodes they have appeared in.
           </p>
         </div>
       </header>
@@ -35,30 +38,23 @@ export default function HomePage({ onCharacterSelect }: Props) {
         {error && <ErrorMessage message="Failed to load characters." />}
 
         {!fetching && !error && info && (
-          <>
-            <div className={styles.infoBar}>
-              <span className={styles.infoPage}>
-                Page {page} of {info.pages}
-              </span>
-            </div>
-
-            <ul className={styles.grid} role="list">
-              {characters.map((character, i) => (
-                <li key={character.id}>
-                  <CharacterCard
-                    character={character}
-                    index={i}
-                    onClick={() => onCharacterSelect?.(character.id)}
-                  />
-                </li>
-              ))}
-            </ul>
-          </>
+          <ul className={styles.grid} role="list">
+            {displayedCharacters.map((character, i) => (
+              <li key={character.id}>
+                <CharacterCard
+                  character={character}
+                  index={i}
+                  onClick={() => onCharacterSelect?.(character.id)}
+                />
+              </li>
+            ))}
+          </ul>
         )}
       </main>
 
       {!fetching && !error && info && (
         <footer className={styles.footer}>
+          <span className={styles.infoPage}>Page {page} of {info.pages}</span>
           <Pagination
             currentPage={page}
             totalPages={info.pages}

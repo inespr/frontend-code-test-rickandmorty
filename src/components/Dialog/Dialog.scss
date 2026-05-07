@@ -23,8 +23,8 @@
 
 .dialog-container {
   position: relative;
-  max-width: 90vw;
-  max-height: 90vh;
+  width: min(800px, 90vw);
+  max-height: 85vh;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -44,13 +44,46 @@
   }
 
   @media (max-width: 768px) {
-    max-width: 95vw;
-    max-height: 95vh;
+    width: 95vw;
+    max-height: 88vh;
     border-radius: 8px;
+  }
+}
+
+.dialog-close-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 12px 4px;
+  background: var(--bg-card);
+}
+
+.dialog-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition:
+    border-color 220ms ease,
+    color 220ms ease,
+    background 220ms ease;
+
+  &:hover {
+    border-color: var(--border-hover);
+    color: var(--accent);
+    background: var(--accent-dim);
   }
 }
 
 .dialog-content {
   width: 100%;
-  height: 100%;
 }
