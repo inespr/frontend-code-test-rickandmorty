@@ -75,11 +75,7 @@
 .list {
   max-height: 380px;
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(191, 4, 4, 0.2) transparent;
-
-  &::-webkit-scrollbar { width: 3px; }
-  &::-webkit-scrollbar-thumb { background: rgba(191, 4, 4, 0.25); border-radius: 2px; }
+  @include thin-scrollbar;
 
   @include mobile { max-height: 300px; }
 }
@@ -124,59 +120,5 @@
 }
 
 .openBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-muted);
-  opacity: 0;
-  transition: opacity var(--transition), border-color var(--transition), color var(--transition), background var(--transition);
-  flex-shrink: 0;
-
-  &:hover {
-    border-color: var(--border-hover);
-    color: var(--accent);
-    background: var(--accent-dim);
-  }
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 12px 20px;
-  border-top: 1px solid var(--border);
-  background: rgba(191, 4, 4, 0.03);
-}
-
-.pageBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-secondary);
-  transition: border-color var(--transition), color var(--transition), background var(--transition);
-
-  &:hover:not(:disabled) {
-    border-color: var(--border-hover);
-    color: var(--accent);
-    background: var(--accent-dim);
-  }
-
-  &:disabled { opacity: 0.25; cursor: not-allowed; }
-}
-
-.pageInfo {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--text-muted);
+  @include episode-open-btn;
 }

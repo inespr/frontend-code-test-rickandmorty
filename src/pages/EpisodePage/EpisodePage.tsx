@@ -3,13 +3,8 @@ import { Calendar, Users, ArrowLeft } from "lucide-react";
 import { useEpisode } from "../../hooks/useEpisode";
 import { Loader } from "../../components/Loader";
 import { ErrorMessage } from "../../components/ErrorMessage";
+import { CharacterButton } from "../../components/CharacterButton";
 import styles from "./EpisodePage.module.scss";
-
-const STATUS_COLOR: Record<string, string> = {
-  Alive:   "var(--green)",
-  Dead:    "var(--red)",
-  unknown: "var(--yellow)",
-};
 
 export default function EpisodePage() {
   const { id } = useParams<{ id: string }>();
@@ -53,21 +48,11 @@ export default function EpisodePage() {
 
             <div className={styles.grid}>
               {episode.characters.map((char) => (
-                <button
+                <CharacterButton
                   key={char.id}
-                  className={styles.charBtn}
+                  char={char}
                   onClick={() => handleCharacter(char.id)}
-                  title={char.name}
-                >
-                  <div className={styles.avatarWrapper}>
-                    <img src={char.image} alt={char.name} className={styles.avatar} />
-                    <span
-                      className={styles.statusDot}
-                      style={{ background: STATUS_COLOR[char.status] ?? STATUS_COLOR.unknown }}
-                    />
-                  </div>
-                  <span className={styles.charName}>{char.name}</span>
-                </button>
+                />
               ))}
             </div>
           </section>

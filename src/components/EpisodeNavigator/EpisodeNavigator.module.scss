@@ -70,14 +70,7 @@
   max-height: 280px;
   overflow-y: auto;
   background: var(--bg-card);
-  scrollbar-width: thin;
-  scrollbar-color: rgba(191, 4, 4, 0.2) transparent;
-
-  &::-webkit-scrollbar { width: 3px; }
-  &::-webkit-scrollbar-thumb {
-    background: rgba(191, 4, 4, 0.25);
-    border-radius: 2px;
-  }
+  @include thin-scrollbar;
 
   @include mobile { max-height: 240px; }
 }
@@ -111,24 +104,7 @@
 }
 
 .openBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-muted);
-  opacity: 0;
-  transition: opacity var(--transition), border-color var(--transition), color var(--transition), background var(--transition);
-  flex-shrink: 0;
-
-  &:hover {
-    border-color: var(--border-hover);
-    color: var(--accent);
-    background: var(--accent-dim);
-  }
+  @include episode-open-btn;
 }
 
 .itemActive {

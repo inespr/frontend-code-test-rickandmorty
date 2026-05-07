@@ -3,6 +3,7 @@ import { Calendar, Users } from "lucide-react";
 import { Dialog } from "../Dialog";
 import { useEpisode } from "../../hooks/useEpisode";
 import { Loader } from "../Loader";
+import { CharacterButton } from "../CharacterButton";
 import styles from "./EpisodeModal.module.scss";
 
 interface Props {
@@ -10,19 +11,12 @@ interface Props {
   onClose: () => void;
 }
 
-const STATUS_COLOR: Record<string, string> = {
-  Alive:   "var(--green)",
-  Dead:    "var(--red)",
-  unknown: "var(--yellow)",
-};
-
 export function EpisodeModal({ episodeId, onClose }: Props) {
   const navigate = useNavigate();
   const { episode, fetching } = useEpisode(episodeId);
 
   const handleCharacter = (id: string) => {
     onClose();
-    // Navigate to full character page — no modal stacking
     navigate(`/character/${id}`);
   };
 
@@ -50,21 +44,12 @@ export function EpisodeModal({ episodeId, onClose }: Props) {
 
             <div className={styles.grid}>
               {episode.characters.map((char) => (
-                <button
+                <CharacterButton
                   key={char.id}
-                  className={styles.charBtn}
+                  char={char}
                   onClick={() => handleCharacter(char.id)}
-                  title={char.name}
-                >
-                  <div className={styles.avatarWrapper}>
-                    <img src={char.image} alt={char.name} className={styles.avatar} />
-                    <span
-                      className={styles.statusDot}
-                      style={{ background: STATUS_COLOR[char.status] ?? STATUS_COLOR.unknown }}
-                    />
-                  </div>
-                  <span className={styles.charName}>{char.name}</span>
-                </button>
+                  variant="minimal"
+                />
               ))}
             </div>
           </div>
