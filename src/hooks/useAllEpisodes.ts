@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useQuery } from "urql";
+import { useClient } from "urql";
 import { GET_EPISODES } from "../graphql/queries";
 
 interface EpisodeItem { id: string; name: string; air_date: string; episode: string; }
@@ -8,29 +8,40 @@ interface EpisodesResponse {
 }
 
 export function useAllEpisodes() {
-  const [allEpisodes, setAllEpisodes] = useState<EpisodeItem[]>([]);
-  const [fetchPage, setFetchPage] = useState(1);
-  const [done, setDone] = useState(false);
-
-  const [{ data, fetching }] = useQuery<EpisodesResponse>({
-    query: GET_EPISODES,
-    variables: { page: fetchPage },
-    pause: done,
-  });
+  const client = useClient();
+  const [episodes, setEpisodes] = useState<EpisodeItem[]>([]);
+  const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
-    if (!data) return;
-    setAllEpisodes((prev) => {
-      const existingIds = new Set(prev.map((e) => e.id));
-      const newOnes = data.episodes.results.filter((e) => !existingIds.has(e.id));
-      return [...prev, ...newOnes];
-    });
-    if (fetchPage < data.episodes.info.pages) {
-      setFetchPage((p) => p + 1);
-    } else {
-      setDone(true);
-    }
-  }, [data]);
+    let cancelled = false;
 
-  return { episodes: allEpisodes, fetching: !done || fetching };
+    async function fetchAll() {
+      const first = await client.query<EpisodesResponse>(GET_EPISODES, { page: 1 }).toPromise();
+      if (cancelled || !first.data) return;
+
+      const totalPages = first.data.episodes.info.pages;
+      const results: EpisodeItem[] = [...first.data.episodes.results];
+
+      if (totalPages > 1) {
+        const rest = await Promise.all(
+          Array.from({ length: totalPages - 1 }, (_, i) =>
+            client.query<EpisodesResponse>(GET_EPISODES, { page: i + 2 }).toPromise()
+          )
+        );
+        for (const r of rest) {
+          if (r.data) results.push(...r.data.episodes.results);
+        }
+      }
+
+      if (!cancelled) {
+        setEpisodes(results.sort((a, b) => a.episode.localeCompare(b.episode)));
+        setFetching(false);
+      }
+    }
+
+    fetchAll();
+    return () => { cancelled = true; };
+  }, [client]);
+
+  return { episodes, fetching };
 }

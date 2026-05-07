@@ -25,6 +25,36 @@
 
 .title { @include mono-label; }
 
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.navBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color var(--transition), color var(--transition);
+
+  &:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
 .count {
   font-family: var(--font-mono);
   font-size: 0.68rem;
@@ -77,7 +107,7 @@
 
 .item {
   display: grid;
-  grid-template-columns: 56px 1fr auto auto;
+  grid-template-columns: 56px 1fr auto;
   align-items: center;
   gap: 12px;
   width: 100%;
@@ -101,10 +131,6 @@
     gap: 8px;
     padding: 9px 14px;
   }
-}
-
-.openBtn {
-  @include episode-open-btn;
 }
 
 .itemActive {

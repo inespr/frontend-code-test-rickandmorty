@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Tv2, ExternalLink } from "lucide-react";
+import { Tv2 } from "lucide-react";
 import { Dialog } from "../Dialog";
 import { useAllEpisodes } from "../../hooks/useAllEpisodes";
 import { Loader } from "../Loader";
@@ -53,17 +53,17 @@ export function EpisodesModal({ onClose }: Props) {
         <div className={styles.list}>
           {fetching && episodes.length === 0 && <Loader />}
           {filtered.map((ep) => (
-            <div key={ep.id} className={styles.item}>
+            <div
+              key={ep.id}
+              className={styles.item}
+              onClick={() => handleEpisode(ep.id)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === "Enter" && handleEpisode(ep.id)}
+            >
               <span className={styles.code}>{ep.episode}</span>
               <span className={styles.name}>{ep.name}</span>
               <span className={styles.date}>{ep.air_date}</span>
-              <button
-                className={styles.openBtn}
-                onClick={() => handleEpisode(ep.id)}
-                title="Ver personajes del episodio"
-              >
-                <ExternalLink size={11} />
-              </button>
             </div>
           ))}
         </div>

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Tv2, ExternalLink } from "lucide-react";
+import { Tv2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Episode } from "../../types";
 import { useEpisodes } from "../../hooks/useEpisodes";
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export function EpisodeNavigator({ episodes }: Props) {
-  const { episodes: sorted, currentIndex, total, goTo } = useEpisodes(episodes);
+  const { episodes: sorted, currentIndex, total, goTo, goNext, goPrev, hasPrev, hasNext } = useEpisodes(episodes);
   const navigate = useNavigate();
   const [season, setSeason] = useState("all");
   const activeRef = useRef<HTMLDivElement>(null);
@@ -32,7 +32,25 @@ export function EpisodeNavigator({ episodes }: Props) {
           <Tv2 size={13} className={styles.titleIcon} />
           <h3 className={styles.title}>Episodes</h3>
         </div>
-        <span className={styles.count}>{total} episodes</span>
+        <div className={styles.nav}>
+          <button
+            className={styles.navBtn}
+            onClick={goPrev}
+            disabled={!hasPrev}
+            aria-label="Previous episode"
+          >
+            <ChevronLeft size={13} />
+          </button>
+          <span className={styles.count}>{currentIndex + 1} / {total}</span>
+          <button
+            className={styles.navBtn}
+            onClick={goNext}
+            disabled={!hasNext}
+            aria-label="Next episode"
+          >
+            <ChevronRight size={13} />
+          </button>
+        </div>
       </div>
 
       <div className={styles.seasons}>
@@ -65,22 +83,14 @@ export function EpisodeNavigator({ episodes }: Props) {
               key={ep.id}
               ref={isActive ? activeRef : null}
               className={`${styles.item} ${isActive ? styles.itemActive : ""}`}
-              onClick={() => goTo(realIdx)}
+              onClick={() => { goTo(realIdx); navigate(`/episode/${ep.id}`); }}
               role="button"
               tabIndex={0}
-              onKeyDown={(e) => e.key === "Enter" && goTo(realIdx)}
+              onKeyDown={(e) => e.key === "Enter" && (goTo(realIdx), navigate(`/episode/${ep.id}`))}
             >
               <span className={styles.code}>{ep.episode}</span>
               <span className={styles.name}>{ep.name}</span>
               <span className={styles.date}>{ep.air_date}</span>
-              <button
-                className={styles.openBtn}
-                onClick={(e) => { e.stopPropagation(); navigate(`/episode/${ep.id}`); }}
-                aria-label={`Ver detalles de ${ep.name}`}
-                title="Ver personajes del episodio"
-              >
-                <ExternalLink size={11} />
-              </button>
             </div>
           );
         })}
