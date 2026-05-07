@@ -185,3 +185,13 @@ All tests at once:
 ```bash
 npm run test:all
 ```
+
+#### Unit test results (Vitest headless)
+
+![Unit tests](./cypress/screenshots/unit-test-heandless-result.JPG)
+
+#### E2E test results (Cypress)
+
+![Cypress run 1](./cypress/screenshots/result-cypress.JPG)
+
+![Cypress run 2](./cypress/screenshots/result-cypress-2.JPG)
