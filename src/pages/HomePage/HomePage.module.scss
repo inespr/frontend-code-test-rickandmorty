@@ -1,0 +1,187 @@
+@use "../../styles/mixins" as *;
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(21, 1, 1, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border);
+  padding: 16px 24px;
+  z-index: 10;
+
+  @include mobile {
+    padding: 12px 16px;
+  }
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 24px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  z-index: 20;
+  overflow: hidden;
+
+  @include tablet { padding: 20px 20px 16px; }
+  @include mobile { padding: 16px 16px 12px; }
+
+  &::before {
+    content: "R&M";
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    font-size: 14rem;
+    font-weight: 800;
+    color: rgba(191, 4, 4, 0.04);
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+
+    @include mobile { font-size: 6rem; }
+  }
+}
+
+.headerInner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+
+  @include mobile { font-size: 1.6rem; gap: 10px; }
+}
+
+.logoAccent {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 500;
+  background: var(--accent-dim);
+  border: 1px solid rgba(191, 4, 4, 0.3);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+
+  @include mobile { font-size: 0.9rem; padding: 3px 8px; }
+}
+
+.logoSep {
+  width: 1px;
+  height: 28px;
+  background: var(--border);
+}
+
+.subtitle {
+  @include mono-label;
+  font-size: 0.78rem;
+}
+
+.logoRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+
+  @include mobile { gap: 12px; margin-bottom: 8px; }
+}
+
+.logoBadge {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+
+  @include mobile { font-size: 1.1rem; }
+}
+
+.infoCount {
+  @include mono-label;
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.main {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 120px;
+  padding: 32px 24px 120px;
+
+  @include tablet { padding: 24px 20px 120px; margin-top: 110px; }
+  @include mobile { padding: 16px 16px 100px; margin-top: 100px; }
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  animation: fadeIn 300ms both;
+}
+
+.infoBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: rgba(21, 1, 1, 0.5);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  animation: fadeIn 300ms both;
+
+  @include mobile {
+    gap: 6px;
+    padding: 10px 12px;
+  }
+}
+
+.infoTotal {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.infoDivider { color: var(--text-muted); }
+
+.infoPage {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.grid {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include desktop {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
