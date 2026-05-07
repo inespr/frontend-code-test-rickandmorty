@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
-import HomePage from "./pages/HomePage/HomePage";
-import CharacterPage from "./pages/CharacterPage/CharacterPage";
-import EpisodePage from "./pages/EpisodePage/EpisodePage";
+import HomePage from "./pages/HomePage";
+import CharacterPage from "./pages/CharacterPage";
+import EpisodePage from "./pages/EpisodePage";
 import { Dialog, DialogContent } from "@/components/Dialog";
 
 function AppRoutes() {
