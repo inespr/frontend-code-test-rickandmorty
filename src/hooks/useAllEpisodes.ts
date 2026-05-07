@@ -7,6 +7,8 @@ interface EpisodesResponse {
   episodes: { info: { count: number; pages: number }; results: EpisodeItem[] };
 }
 
+const BATCH_SIZE = 3;
+
 export function useAllEpisodes() {
   const client = useClient();
   const [episodes, setEpisodes] = useState<EpisodeItem[]>([]);
@@ -23,13 +25,16 @@ export function useAllEpisodes() {
       const results: EpisodeItem[] = [...first.data.episodes.results];
 
       if (totalPages > 1) {
-        const rest = await Promise.all(
-          Array.from({ length: totalPages - 1 }, (_, i) =>
-            client.query<EpisodesResponse>(GET_EPISODES, { page: i + 2 }).toPromise()
-          )
-        );
-        for (const r of rest) {
-          if (r.data) results.push(...r.data.episodes.results);
+        const remaining = Array.from({ length: totalPages - 1 }, (_, i) => i + 2);
+        for (let i = 0; i < remaining.length; i += BATCH_SIZE) {
+          const batch = await Promise.all(
+            remaining.slice(i, i + BATCH_SIZE).map((page) =>
+              client.query<EpisodesResponse>(GET_EPISODES, { page }).toPromise()
+            )
+          );
+          for (const r of batch) {
+            if (r.data) results.push(...r.data.episodes.results);
+          }
         }
       }
 

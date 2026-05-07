@@ -5,10 +5,12 @@ import { CharactersResponse } from "../types";
 export interface CharacterFilter {
   name?: string;
   status?: string;
+  gender?: string;
+  species?: string;
 }
 
 export function useCharacters(page: number, filter?: CharacterFilter) {
-  const hasFilter = filter && (filter.name || filter.status);
+  const hasFilter = filter && Object.values(filter).some(Boolean);
 
   const [{ data, fetching, error }] = useQuery<CharactersResponse>({
     query: GET_CHARACTERS,

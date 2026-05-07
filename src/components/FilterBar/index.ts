@@ -1,2 +1,2 @@
 export { FilterBar } from "./FilterBar";
-export type { StatusFilter, GroupBy } from "./FilterBar";
+export type { StatusFilter, GenderFilter, SpeciesFilter, OriginFilter } from "./FilterBar";

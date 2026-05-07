@@ -13,7 +13,7 @@ export function CharacterCard({ character, index, onClick }: Props) {
         <div
             onClick={onClick}
             data-testid="character-card"
-            style={{ animationDelay: `${index * 40}ms` }}
+            style={{ animationDelay: `${Math.min(index * 40, 400)}ms` }}
             className={`${styles.card} ${onClick ? styles.clickable : ""}`}
         >
             <img

@@ -1,14 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { FilterBar, StatusFilter, GroupBy } from "./FilterBar";
+import { FilterBar, StatusFilter } from "./FilterBar";
 
 const makeProps = (overrides = {}) => ({
   search: "",
   status: "" as StatusFilter,
-  groupBy: "" as GroupBy,
   onSearchChange: vi.fn(),
   onStatusChange: vi.fn(),
-  onGroupByChange: vi.fn(),
   ...overrides,
 });
 
@@ -33,13 +31,8 @@ describe("FilterBar", () => {
     expect(onSearchChange).toHaveBeenCalledWith("");
   });
 
-  it("renders status select with placeholder", () => {
+  it("renders status select", () => {
     render(<FilterBar {...makeProps()} />);
     expect(screen.getByText(/all status/i)).toBeInTheDocument();
-  });
-
-  it("renders group by select with placeholder", () => {
-    render(<FilterBar {...makeProps()} />);
-    expect(screen.getByText(/group/i)).toBeInTheDocument();
   });
 });
