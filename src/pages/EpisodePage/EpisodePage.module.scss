@@ -7,10 +7,38 @@
 }
 
 .topBar {
-  padding: 20px 24px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 24px;
   border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  z-index: 20;
 
-  @include mobile { padding: 14px 16px; }
+  @include mobile { padding: 12px 16px; }
+}
+
+.topBarInner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.topBarTop {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  @include mobile { margin-bottom: 8px; }
+}
+
+.episodeHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  @include mobile { gap: 8px; }
 }
 
 .backBtn {
@@ -41,22 +69,15 @@
   max-width: 1000px;
   width: 100%;
   margin: 0 auto;
+  margin-top: 112px;
   padding: 40px 24px 80px;
   display: flex;
   flex-direction: column;
   gap: 40px;
   animation: fadeUp 400ms both;
 
-  @include tablet { padding: 32px 20px 60px; }
-  @include mobile { padding: 20px 16px 40px; gap: 28px; }
-}
-
-.header {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-bottom: 32px;
-  border-bottom: 1px solid var(--border);
+  @include tablet { padding: 32px 20px 60px; margin-top: 108px; }
+  @include mobile { padding: 20px 16px 40px; gap: 28px; margin-top: 96px; }
 }
 
 .code {
@@ -68,14 +89,13 @@
 }
 
 .title {
-  font-size: 2.4rem;
+  font-size: 1.3rem;
   font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
   color: var(--text-primary);
 
-  @include tablet { font-size: 2rem; }
-  @include mobile { font-size: 1.6rem; }
+  @include mobile { font-size: 1.1rem; }
 }
 
 .date {
@@ -159,6 +179,31 @@
   &:hover { color: var(--text-secondary); }
 }
 
+.skeletonItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 8px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.skeletonAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+
+  @include mobile { width: 72px; height: 72px; }
+}
+
+.skeletonName {
+  width: 60px;
+  height: 10px;
+  border-radius: 4px;
+}
+
 .noResults {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -169,27 +214,39 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 
+  @include tablet {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
   @include mobile {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
 }
 
-.paginationRow {
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(21, 1, 1, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border);
+  padding: 14px 24px;
+  z-index: 10;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
+  justify-content: space-evenly;
+  gap: 16px;
 
-  @include mobile { flex-direction: column; gap: 12px; }
+  @include mobile { padding: 10px 16px; gap: 12px; }
 }
 
 .pageInfo {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
 }

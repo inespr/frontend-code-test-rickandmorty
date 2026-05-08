@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useBreakpoint } from "../../hooks/useBreakpoint";
+import { usePageSize } from "../../hooks/usePageSize";
 import { Calendar, Users, ArrowLeft, Search, X } from "lucide-react";
 import { useEpisode } from "../../hooks/useEpisode";
-import { Loader } from "../../components/Loader";
 import { ErrorMessage } from "../../components/ErrorMessage";
+import { Skeleton } from "@/components/ui/skeleton";
 import { CharacterButton } from "../../components/CharacterButton";
 import { Pagination } from "../../components/Pagination";
 import styles from "./EpisodePage.module.scss";
@@ -13,8 +13,7 @@ export default function EpisodePage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const bp = useBreakpoint();
-  const PAGE_SIZE = bp === 'mobile' ? 8 : bp === 'tablet' ? 12 : 16;
+  const PAGE_SIZE = usePageSize();
   const { episode, fetching, error } = useEpisode(id ?? null);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -37,27 +36,43 @@ export default function EpisodePage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.topBar}>
-        <button className={styles.backBtn} onClick={() => navigate(-1)}>
-          <ArrowLeft size={15} />
-          Go Back
-        </button>
-      </div>
+      <header className={styles.topBar}>
+        <div className={styles.topBarInner}>
+          <div className={styles.topBarTop}>
+            <button className={styles.backBtn} onClick={() => navigate(-1)}>
+              <ArrowLeft size={15} />
+              Go Back
+            </button>
+          </div>
+          {episode && (
+            <div className={styles.episodeHeader}>
+              <span className={styles.code}>{episode.episode}</span>
+              <h1 className={styles.title}>{episode.name}</h1>
+              <div className={styles.date}>
+                <Calendar size={13} />
+                {episode.air_date}
+              </div>
+            </div>
+          )}
+        </div>
+      </header>
 
-      {fetching && <Loader fullPage />}
+      {fetching && (
+        <main className={styles.main} aria-hidden="true">
+          <div className={styles.grid}>
+            {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+              <div key={i} className={styles.skeletonItem}>
+                <Skeleton className={styles.skeletonAvatar} />
+                <Skeleton className={styles.skeletonName} />
+              </div>
+            ))}
+          </div>
+        </main>
+      )}
       {error && <ErrorMessage message="Failed to load episode." />}
 
       {episode && (
         <main className={styles.main}>
-          <div className={styles.header}>
-            <span className={styles.code}>{episode.episode}</span>
-            <h1 className={styles.title}>{episode.name}</h1>
-            <div className={styles.date}>
-              <Calendar size={13} />
-              {episode.air_date}
-            </div>
-          </div>
-
           <section className={styles.section}>
             <div className={styles.sectionHeader}>
               <Users size={14} className={styles.sectionIcon} />
@@ -94,15 +109,19 @@ export default function EpisodePage() {
                 />
               ))}
             </div>
-
-            {totalPages > 1 && (
-              <div className={styles.paginationRow}>
-                <span className={styles.pageInfo}>Page {page} of {totalPages}</span>
-                <Pagination currentPage={page} totalPages={totalPages} onPageChange={(p) => { setPage(p); window.scrollTo(0, 0); }} />
-              </div>
-            )}
           </section>
         </main>
+      )}
+
+      {totalPages > 1 && (
+        <footer className={styles.footer}>
+          <span className={styles.pageInfo}>Page {page} of {totalPages}</span>
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={(p) => { setPage(p); window.scrollTo(0, 0); }}
+          />
+        </footer>
       )}
     </div>
   );

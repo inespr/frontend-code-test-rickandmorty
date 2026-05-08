@@ -30,9 +30,9 @@
   }
 
   .avatarWrapper {
-    width: 64px;
-    height: 64px;
-    @include mobile { width: 52px; height: 52px; }
+    width: 80px;
+    height: 80px;
+    @include mobile { width: 72px; height: 72px; }
   }
 }
 
