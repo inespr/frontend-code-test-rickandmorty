@@ -45,6 +45,12 @@ you can get inspired by this image:
 
 ![Character Page.png](./docs/CharacterPage.png)
 
+## Live demo
+
+[https://frontend-code-test-rickandmorty.vercel.app](https://frontend-code-test-rickandmorty.vercel.app)
+
+---
+
 ## Setup
 
 Install dependencies (using NPM)
@@ -135,7 +141,7 @@ The Rick & Morty API paginates episodes (20/page). To show all seasons in the fi
 Design tokens (colors, radii, transitions) live in `:root` CSS variables. Components use SCSS Modules for scoped class names. Shared patterns (scrollbars, season chips, episode open buttons) are SCSS mixins in `_mixins.scss`.
 
 **Reusable `CharacterButton` component**  
-Identical JSX (avatar circle + status dot + name) appeared in both `EpisodePage` and `EpisodeModal`. Extracted to a single component with a `variant` prop (`"card"` with border/background vs `"minimal"` plain).
+Identical JSX (avatar circle + status dot + name) appears in both `EpisodePage` and `EpisodesModal`. Extracted to a single component with a `variant` prop (`"card"` with border/background vs `"minimal"` plain).
 
 **shadcn/ui usage**
 - `Skeleton` — animated placeholder cards in the character grid while loading
@@ -173,6 +179,7 @@ src/
 │   ├── useEpisode.ts
 │   ├── useEpisodes.ts     # Single-page episode query
 │   ├── useIsMobile.ts     # Re-exports useIsMobile from useBreakpoint
+│   ├── usePageSize.ts     # Calculates items/page that fit viewport without scroll
 │   └── usePagination.ts
 ├── lib/
 │   ├── urqlClient.ts      # urql GraphQL client setup
