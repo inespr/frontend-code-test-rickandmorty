@@ -225,3 +225,22 @@ npm run test:all
 ![Cypress run 1](./cypress/screenshots/result-cypress.JPG)
 
 ![Cypress run 2](./cypress/screenshots/result-cypress-2.JPG)
+
+## Screenshots
+
+### Home
+| Desktop | Tablet | Mobile |
+|---|---|---|
+| ![home desktop](./docs/screenshots/home-desktop.png) | ![home tablet](./docs/screenshots/home-tablet.png) | ![home mobile](./docs/screenshots/home-mobile.png) |
+
+### Character
+| Desktop | Tablet | Mobile |
+|---|---|---|
+| ![character desktop](./docs/screenshots/character-desktop.png) | ![character tablet](./docs/screenshots/character-tablet.png) | ![character mobile](./docs/screenshots/character-mobile.png) |
+
+### Episode
+| Desktop | Tablet | Mobile |
+|---|---|---|
+| ![episode desktop](./docs/screenshots/episode-desktop.png) | ![episode tablet](./docs/screenshots/episode-tablet.png) | ![episode mobile](./docs/screenshots/episode-mobile.png) |
+
+

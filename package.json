@@ -14,7 +14,8 @@
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "cypress run",
-    "test:all": "vitest run && cypress run"
+    "test:all": "vitest run && cypress run",
+    "screenshots": "playwright install chromium --with-deps && node scripts/screenshots.mjs"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.8",
@@ -46,6 +47,7 @@
     "cypress": "^15.14.2",
     "get-graphql-schema": "^2.1.2",
     "jsdom": "^29.1.1",
+    "playwright": "^1.59.1",
     "sass": "^1.99.0",
     "tailwindcss": "^4.2.4",
     "typescript": "^5.7.3",
