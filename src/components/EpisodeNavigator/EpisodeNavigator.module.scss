@@ -124,10 +124,8 @@
     background: rgba(191, 4, 4, 0.05);
   }
 
-  &:hover .openBtn { opacity: 1; }
-
   @include mobile {
-    grid-template-columns: 52px 1fr auto;
+    grid-template-columns: 52px 1fr;
     gap: 8px;
     padding: 9px 14px;
   }
@@ -165,8 +163,6 @@
   font-size: 0.62rem;
   color: var(--text-muted);
   white-space: nowrap;
-
-  @include mobile { display: none; }
 }
 
 .empty {

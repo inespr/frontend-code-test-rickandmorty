@@ -63,53 +63,6 @@
   margin-bottom: 0;
 }
 
-.logo {
-  font-size: 2.2rem;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 8px;
-
-  @include mobile { font-size: 1.6rem; gap: 10px; }
-}
-
-.logoAccent {
-  color: var(--accent);
-  font-family: var(--font-mono);
-  font-size: 1.1rem;
-  font-weight: 500;
-  background: var(--accent-dim);
-  border: 1px solid rgba(191, 4, 4, 0.3);
-  padding: 4px 10px;
-  border-radius: var(--radius-sm);
-
-  @include mobile { font-size: 0.9rem; padding: 3px 8px; }
-}
-
-.logoSep {
-  width: 1px;
-  height: 28px;
-  background: var(--border);
-}
-
-.subtitle {
-  @include mono-label;
-  font-size: 0.75rem;
-  text-align: right;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: color var(--transition);
-
-  &:hover { color: var(--text-secondary); .subtitleLink { color: var(--accent); } }
-
-  @include mobile { display: none; }
-}
-
 .episodesBtn {
   display: inline-flex;
   align-items: center;
@@ -183,41 +136,6 @@
   @include mobile { padding: 16px 16px 72px; margin-top: 160px; }
 }
 
-.info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-  animation: fadeIn 300ms both;
-}
-
-.infoBar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 20px;
-  padding: 12px 16px;
-  background: rgba(21, 1, 1, 0.5);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  animation: fadeIn 300ms both;
-
-  @include mobile {
-    gap: 6px;
-    padding: 10px 12px;
-  }
-}
-
-.infoTotal {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--accent);
-  font-weight: 500;
-}
-
-.infoDivider { color: var(--text-muted); }
-
 .infoPage {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -238,40 +156,6 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
   }
-}
-
-.group {
-  margin-bottom: 24px;
-}
-
-.groupLabel {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--accent);
-  margin-bottom: 10px;
-  padding: 6px 10px;
-  border-left: 2px solid var(--accent);
-  background: var(--accent-dim);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  width: 100%;
-  cursor: pointer;
-  transition: background var(--transition), border-color var(--transition);
-
-  &:hover {
-    background: rgba(191, 4, 4, 0.22);
-  }
-}
-
-.groupCount {
-  margin-left: auto;
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  font-weight: 400;
 }
 
 .skeletonCard {

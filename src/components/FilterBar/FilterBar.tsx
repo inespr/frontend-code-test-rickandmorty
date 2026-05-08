@@ -1,5 +1,7 @@
-import { Search, X } from "lucide-react";
+import { useState } from "react";
+import { Search, X, SlidersHorizontal } from "lucide-react";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
 import styles from "./FilterBar.module.scss";
 
 export type StatusFilter = "" | "Alive" | "Dead" | "unknown";
@@ -26,6 +28,13 @@ export function FilterBar({
   onSearchChange, onStatusChange, onGenderChange, onSpeciesChange, onOriginChange,
   className,
 }: Props) {
+  const bp = useBreakpoint();
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
+  const isMobile = bp === 'mobile';
+  const showExtraFilters = !isMobile || filtersOpen;
+  const hasExtraFilters = !!(gender || species || origin);
+
   return (
     <div className={[styles.bar, className].filter(Boolean).join(" ")}>
       <div className={styles.inputs}>
@@ -44,6 +53,17 @@ export function FilterBar({
             </button>
           )}
         </div>
+
+        {isMobile && (
+          <button
+            className={`${styles.filtersToggle} ${(filtersOpen || hasExtraFilters) ? styles.filtersToggleActive : ''}`}
+            onClick={() => setFiltersOpen(o => !o)}
+            aria-expanded={filtersOpen}
+          >
+            <SlidersHorizontal size={12} />
+            Filters{hasExtraFilters ? ' •' : ''}
+          </button>
+        )}
       </div>
 
       <div className={styles.chips}>
@@ -62,66 +82,70 @@ export function FilterBar({
           </SelectContent>
         </Select>
 
-        <span className={styles.sep} />
+        {showExtraFilters && (
+          <>
+            <span className={styles.sep} />
 
-        <Select
-          value={gender === "" ? "all" : gender}
-          onValueChange={(v) => onGenderChange(v === "all" ? "" : v as GenderFilter)}
-        >
-          <SelectTrigger className={`${styles.chip} ${gender ? styles.chipActive : ""}`}>
-            <SelectValue placeholder="Gender" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All genders</SelectItem>
-            <SelectItem value="Male">Male</SelectItem>
-            <SelectItem value="Female">Female</SelectItem>
-            <SelectItem value="Genderless">Genderless</SelectItem>
-            <SelectItem value="unknown">Unknown</SelectItem>
-          </SelectContent>
-        </Select>
+            <Select
+              value={gender === "" ? "all" : gender}
+              onValueChange={(v) => onGenderChange(v === "all" ? "" : v as GenderFilter)}
+            >
+              <SelectTrigger className={`${styles.chip} ${gender ? styles.chipActive : ""}`}>
+                <SelectValue placeholder="Gender" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All genders</SelectItem>
+                <SelectItem value="Male">Male</SelectItem>
+                <SelectItem value="Female">Female</SelectItem>
+                <SelectItem value="Genderless">Genderless</SelectItem>
+                <SelectItem value="unknown">Unknown</SelectItem>
+              </SelectContent>
+            </Select>
 
-        <span className={styles.sep} />
+            <span className={styles.sep} />
 
-        <Select
-          value={species === "" ? "all" : species}
-          onValueChange={(v) => onSpeciesChange(v === "all" ? "" : v as SpeciesFilter)}
-        >
-          <SelectTrigger className={`${styles.chip} ${species ? styles.chipActive : ""}`}>
-            <SelectValue placeholder="Species" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All species</SelectItem>
-            <SelectItem value="Human">Human</SelectItem>
-            <SelectItem value="Alien">Alien</SelectItem>
-            <SelectItem value="Humanoid">Humanoid</SelectItem>
-            <SelectItem value="Robot">Robot</SelectItem>
-            <SelectItem value="Animal">Animal</SelectItem>
-            <SelectItem value="Mythological Creature">Mythological</SelectItem>
-            <SelectItem value="Disease">Disease</SelectItem>
-            <SelectItem value="Cronenberg">Cronenberg</SelectItem>
-            <SelectItem value="Poopybutthole">Poopybutthole</SelectItem>
-          </SelectContent>
-        </Select>
+            <Select
+              value={species === "" ? "all" : species}
+              onValueChange={(v) => onSpeciesChange(v === "all" ? "" : v as SpeciesFilter)}
+            >
+              <SelectTrigger className={`${styles.chip} ${species ? styles.chipActive : ""}`}>
+                <SelectValue placeholder="Species" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All species</SelectItem>
+                <SelectItem value="Human">Human</SelectItem>
+                <SelectItem value="Alien">Alien</SelectItem>
+                <SelectItem value="Humanoid">Humanoid</SelectItem>
+                <SelectItem value="Robot">Robot</SelectItem>
+                <SelectItem value="Animal">Animal</SelectItem>
+                <SelectItem value="Mythological Creature">Mythological</SelectItem>
+                <SelectItem value="Disease">Disease</SelectItem>
+                <SelectItem value="Cronenberg">Cronenberg</SelectItem>
+                <SelectItem value="Poopybutthole">Poopybutthole</SelectItem>
+              </SelectContent>
+            </Select>
 
-        <span className={styles.sep} />
+            <span className={styles.sep} />
 
-        <Select
-          value={origin === "" ? "all" : origin}
-          onValueChange={(v) => onOriginChange(v === "all" ? "" : v as OriginFilter)}
-        >
-          <SelectTrigger className={`${styles.chip} ${origin ? styles.chipActive : ""}`}>
-            <SelectValue placeholder="Origin" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All origins</SelectItem>
-            <SelectItem value="Earth (C-137)">Earth (C-137)</SelectItem>
-            <SelectItem value="Earth (Replacement Dimension)">Earth (Replacement)</SelectItem>
-            <SelectItem value="Cronenberg Earth">Cronenberg Earth</SelectItem>
-            <SelectItem value="Citadel of Ricks">Citadel of Ricks</SelectItem>
-            <SelectItem value="Gazorpazorp">Gazorpazorp</SelectItem>
-            <SelectItem value="unknown">Unknown</SelectItem>
-          </SelectContent>
-        </Select>
+            <Select
+              value={origin === "" ? "all" : origin}
+              onValueChange={(v) => onOriginChange(v === "all" ? "" : v as OriginFilter)}
+            >
+              <SelectTrigger className={`${styles.chip} ${origin ? styles.chipActive : ""}`}>
+                <SelectValue placeholder="Origin" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All origins</SelectItem>
+                <SelectItem value="Earth (C-137)">Earth (C-137)</SelectItem>
+                <SelectItem value="Earth (Replacement Dimension)">Earth (Replacement)</SelectItem>
+                <SelectItem value="Cronenberg Earth">Cronenberg Earth</SelectItem>
+                <SelectItem value="Citadel of Ricks">Citadel of Ricks</SelectItem>
+                <SelectItem value="Gazorpazorp">Gazorpazorp</SelectItem>
+                <SelectItem value="unknown">Unknown</SelectItem>
+              </SelectContent>
+            </Select>
+          </>
+        )}
       </div>
     </div>
   );

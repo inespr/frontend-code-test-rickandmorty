@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
 import { Calendar, Users, ArrowLeft, Search, X } from "lucide-react";
 import { useEpisode } from "../../hooks/useEpisode";
 import { Loader } from "../../components/Loader";
@@ -8,12 +9,12 @@ import { CharacterButton } from "../../components/CharacterButton";
 import { Pagination } from "../../components/Pagination";
 import styles from "./EpisodePage.module.scss";
 
-const PAGE_SIZE = 16;
-
 export default function EpisodePage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
+  const bp = useBreakpoint();
+  const PAGE_SIZE = bp === 'mobile' ? 8 : bp === 'tablet' ? 12 : 16;
   const { episode, fetching, error } = useEpisode(id ?? null);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");

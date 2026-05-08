@@ -1,3 +1,5 @@
+@use '../../styles/mixins' as *;
+
 .dialog-overlay {
   position: fixed;
   inset: 0;
@@ -10,7 +12,7 @@
   animation: fadeIn 200ms ease-out;
   flex-direction: column;
 
-  @media (max-width: 768px) {
+  @include mobile {
     align-items: flex-start;
     overflow-y: auto;
     padding: 16px 0 32px;
@@ -56,7 +58,7 @@
     }
   }
 
-  @media (max-width: 768px) {
+  @include mobile {
     width: 95vw;
     max-height: none;
     border-radius: 8px;

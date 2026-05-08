@@ -3,7 +3,7 @@ import { Tv2 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useCharacters } from "../../hooks/useCharacters";
 import { usePagination } from "../../hooks/usePagination";
-import { useIsMobile } from "../../hooks/useIsMobile";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
 import { useDebounce } from "../../hooks/useDebounce";
 import { CharacterCard } from "../../components/CharacterCard";
 import { FilterBar, StatusFilter, GenderFilter, SpeciesFilter, OriginFilter } from "../../components/FilterBar";
@@ -17,7 +17,8 @@ export default function HomePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { page, goToPage } = usePagination();
-  const isMobile = useIsMobile();
+  const bp = useBreakpoint();
+  const skeletonCount = bp === 'mobile' ? 8 : bp === 'tablet' ? 12 : 20;
 
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<StatusFilter>("");
@@ -38,7 +39,7 @@ export default function HomePage() {
   });
 
   const displayedCharacters = (() => {
-    let result = isMobile ? characters.slice(0, 10) : characters;
+    let result = characters;
     if (debouncedOrigin) {
       const q = debouncedOrigin.toLowerCase();
       result = result.filter((c) => c.origin.name.toLowerCase().includes(q));
@@ -80,7 +81,7 @@ export default function HomePage() {
       <main className={styles.main}>
         {fetching && (
           <ul className={styles.grid} aria-hidden="true">
-            {Array.from({ length: 20 }).map((_, i) => (
+            {Array.from({ length: skeletonCount }).map((_, i) => (
               <li key={i}><Skeleton className={styles.skeletonCard} /></li>
             ))}
           </ul>

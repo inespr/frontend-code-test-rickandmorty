@@ -3,6 +3,7 @@ import { Tv2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Episode } from "../../types";
 import { useEpisodes } from "../../hooks/useEpisodes";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
 import styles from "./EpisodeNavigator.module.scss";
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 export function EpisodeNavigator({ episodes }: Props) {
   const { episodes: sorted, currentIndex, total, goTo, goNext, goPrev, hasPrev, hasNext } = useEpisodes(episodes);
   const navigate = useNavigate();
+  const bp = useBreakpoint();
   const [season, setSeason] = useState("all");
   const activeRef = useRef<HTMLDivElement>(null);
 
@@ -90,7 +92,7 @@ export function EpisodeNavigator({ episodes }: Props) {
             >
               <span className={styles.code}>{ep.episode}</span>
               <span className={styles.name}>{ep.name}</span>
-              <span className={styles.date}>{ep.air_date}</span>
+              {bp !== 'mobile' && <span className={styles.date}>{ep.air_date}</span>}
             </div>
           );
         })}
