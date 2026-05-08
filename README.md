@@ -93,9 +93,11 @@ $ npm run dev
 
 #### Home page — `/`
 
-Characters paginated in a responsive grid (4 cols desktop / 3 tablet / 2 mobile). Filters by name (debounced), origin and status. Group by origin toggle. Fixed header with FilterBar.
+Characters paginated in a responsive grid (4 cols desktop / 3 tablet / 2 mobile). Filters by name (debounced), origin and status. Fixed header with FilterBar.
 
 ![Home page](./docs/HomePage.png)
+
+![Home page screenshot](./docs/HomePage.JPG)
 
 #### Character page — `/character/:id`
 
@@ -103,9 +105,21 @@ Character detail with circular image (click to lightbox), status badge, species/
 
 ![Character page](./docs/CharacterPage.png)
 
+![Character page screenshot](./docs/CharacterPage.JPG)
+
 #### Episode page — `/episode/:id`
 
 Full page for a single episode showing all characters. Supports the navigation chain: character → episode → character → back → episode → back → character.
+
+![Episode page screenshot](./docs/EpisodePage.JPG)
+
+#### FilterBar
+
+![FilterBar screenshot](./docs/FilterBar.JPG)
+
+#### Episodes modal
+
+![Episodes modal screenshot](./docs/EpisodesModal.JPG)
 
 ---
 
@@ -139,26 +153,42 @@ src/
 ├── components/
 │   ├── CharacterButton/   # Reusable avatar+status+name button
 │   ├── CharacterCard/     # Poster-style grid card (grayscale → color on hover)
-│   ├── EpisodeModal/      # Radix Dialog with episode detail
+│   ├── Dialog/            # Generic Radix Dialog wrapper
 │   ├── EpisodeNavigator/  # Season filter + scrollable episode list
 │   ├── EpisodesModal/     # All episodes browser (fetches all pages)
-│   ├── FilterBar/         # Name / origin inputs + status Select + group toggle
+│   ├── ErrorMessage/      # Inline error state component
+│   ├── FilterBar/         # Name / gender / species / origin filters
+│   ├── Loader/            # Loading spinner
+│   ├── Pagination/        # Prev / next page controls
 │   ├── StatusBadge/       # Alive / Dead / Unknown pill badge
-│   └── ui/                # shadcn primitives (Badge, Button, Select, Skeleton, Tooltip)
+│   └── ui/                # shadcn primitives (Badge, Button, Card, Select, Skeleton, Tooltip)
+├── graphql/
+│   └── queries.ts         # All GraphQL query documents
 ├── hooks/
 │   ├── useAllEpisodes.ts  # Sequential multi-page episode fetcher
+│   ├── useBreakpoint.ts   # Returns 'mobile' | 'tablet' | 'desktop' + helpers
 │   ├── useCharacter.ts
 │   ├── useCharacters.ts
 │   ├── useDebounce.ts
 │   ├── useEpisode.ts
+│   ├── useEpisodes.ts     # Single-page episode query
+│   ├── useIsMobile.ts     # Re-exports useIsMobile from useBreakpoint
 │   └── usePagination.ts
+├── lib/
+│   ├── urqlClient.ts      # urql GraphQL client setup
+│   └── utils.ts           # shadcn cn() utility
 ├── pages/
 │   ├── HomePage/
 │   ├── CharacterPage/
 │   └── EpisodePage/
 ├── styles/
-│   ├── _mixins.scss       # Breakpoints, thin-scrollbar, episode-open-btn, mono-label
-│   └── global.scss        # CSS variables, fonts, body decorations
+│   ├── _mixins.scss       # mobile/tablet/tablet-and-below/desktop mixins + UI helpers
+│   ├── global.scss        # CSS variables, fonts, body decorations
+│   └── tw-animate.css     # Tailwind animation utilities
+├── test/
+│   └── setup.ts           # Vitest global setup
+├── types/
+│   └── index.ts           # Shared TypeScript types
 └── utils/
     └── constants.ts       # STATUS_COLOR shared constant
 ```
