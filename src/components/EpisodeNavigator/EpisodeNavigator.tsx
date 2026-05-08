@@ -15,7 +15,7 @@ export function EpisodeNavigator({ episodes }: Props) {
   const navigate = useNavigate();
   const bp = useBreakpoint();
   const [season, setSeason] = useState("all");
-  const activeRef = useRef<HTMLDivElement>(null);
+  const activeRef = useRef<HTMLButtonElement>(null);
 
   const seasons = [...new Set(sorted.map((ep) => ep.episode.slice(0, 3)))].sort();
 
@@ -81,19 +81,18 @@ export function EpisodeNavigator({ episodes }: Props) {
           const realIdx = sorted.indexOf(ep);
           const isActive = realIdx === currentIndex;
           return (
-            <div
+            <button
               key={ep.id}
               ref={isActive ? activeRef : null}
               className={`${styles.item} ${isActive ? styles.itemActive : ""}`}
               onClick={() => { goTo(realIdx); navigate(`/episode/${ep.id}`); }}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === "Enter" && (goTo(realIdx), navigate(`/episode/${ep.id}`))}
+              aria-label={`${ep.episode} – ${ep.name}`}
+              aria-current={isActive ? "true" : undefined}
             >
               <span className={styles.code}>{ep.episode}</span>
               <span className={styles.name}>{ep.name}</span>
               {bp !== 'mobile' && <span className={styles.date}>{ep.air_date}</span>}
-            </div>
+            </button>
           );
         })}
       </div>

@@ -79,18 +79,16 @@ export function EpisodesModal({ onClose }: Props) {
             <p className={styles.empty}>No episodes found.</p>
           )}
           {filtered.map((ep) => (
-            <div
+            <button
               key={ep.id}
               className={styles.item}
               onClick={() => handleEpisode(ep.id)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === "Enter" && handleEpisode(ep.id)}
+              aria-label={`${ep.episode} – ${ep.name}`}
             >
               <span className={styles.code}>{ep.episode}</span>
               <span className={styles.name}>{ep.name}</span>
               <span className={styles.date}>{ep.air_date}</span>
-            </div>
+            </button>
           ))}
         </div>
       </div>

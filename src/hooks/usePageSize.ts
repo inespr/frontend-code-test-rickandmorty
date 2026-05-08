@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useBreakpoint } from './useBreakpoint';
+import { useBreakpoint, Breakpoint } from './useBreakpoint';
 
 const COLS = { mobile: 2, tablet: 3, desktop: 4 };
 
@@ -10,7 +10,7 @@ const SECTION_H = { mobile: 100, tablet: 110, desktop: 118 };
 const CARD_H    = { mobile: 136, tablet: 150, desktop: 154 };
 const GAP       = { mobile: 12,  tablet: 16,  desktop: 16  };
 
-function calculate(bp: 'mobile' | 'tablet' | 'desktop'): number {
+function calculate(bp: Breakpoint): number {
   const cols       = COLS[bp];
   const available  = window.innerHeight - HEADER_H[bp] - FOOTER_H - MAIN_PAD[bp] - SECTION_H[bp];
   const rowHeight  = CARD_H[bp] + GAP[bp];

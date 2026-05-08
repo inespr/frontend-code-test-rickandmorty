@@ -120,8 +120,13 @@
   grid-template-columns: 56px 1fr auto;
   align-items: center;
   gap: 12px;
+  width: 100%;
   padding: 10px 20px;
+  text-align: left;
+  border: none;
   border-bottom: 1px solid rgba(191, 4, 4, 0.06);
+  border-radius: 0;
+  background: transparent;
   cursor: pointer;
   transition: background var(--transition);
 

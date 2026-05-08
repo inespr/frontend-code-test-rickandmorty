@@ -113,7 +113,9 @@
   width: 100%;
   padding: 10px 16px;
   text-align: left;
+  border: none;
   border-bottom: 1px solid rgba(191, 4, 4, 0.06);
+  border-radius: 0;
   background: transparent;
   cursor: pointer;
   transition: background var(--transition);

@@ -12,6 +12,9 @@ export function CharacterCard({ character, index, onClick }: Props) {
     return (
         <div
             onClick={onClick}
+            onKeyDown={onClick ? (e) => (e.key === 'Enter' || e.key === ' ') && onClick() : undefined}
+            tabIndex={onClick ? 0 : undefined}
+            role={onClick ? 'button' : undefined}
             data-testid="character-card"
             style={{ animationDelay: `${Math.min(index * 40, 400)}ms` }}
             className={`${styles.card} ${onClick ? styles.clickable : ""}`}
